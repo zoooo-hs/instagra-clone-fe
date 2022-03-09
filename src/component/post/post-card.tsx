@@ -1,4 +1,4 @@
-import { Post } from "./post";
+import { Post } from "../../model";
 
 function computeDescriptino(description: string) {
     const parts = description.split(/([@#][^ \n@#]+)/g)

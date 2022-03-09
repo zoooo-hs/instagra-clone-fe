@@ -1,4 +1,4 @@
-import { Post } from "./post"
+import { Post } from "../../model"
 import PostCard from "./post-card"
 
 interface PostListProps {
