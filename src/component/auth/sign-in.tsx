@@ -45,6 +45,6 @@ export default function SignIn() {
       </div>
       )
     } else {
-      return (<div><h1>hello {user.email}</h1><button onClick={handleLogout}>logout</button></div>)
+      return (<div><h1>hello {user.name}</h1><button onClick={handleLogout}>logout</button></div>)
     }
 }
