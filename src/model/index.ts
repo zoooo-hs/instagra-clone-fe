@@ -20,3 +20,8 @@ export interface User {
     bio: string;
     photo: Photo;
 }
+
+export interface SignIn {
+    email: string;
+    password: string;
+}
