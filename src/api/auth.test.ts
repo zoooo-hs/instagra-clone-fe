@@ -1,5 +1,5 @@
 import axios from "axios";
-import { signIn } from "./auth";
+import { emailDuplicationCheck, nameDuplicationCheck, signIn, signUp } from "./auth";
 
 jest.mock('axios');
 
@@ -21,6 +21,43 @@ describe('auth.ts', () => {
         expect(actual.email).toBe(email);
         expect(actual.name).toBe("test");
 
-    })
+    });
 
+    it('sign up test' ,async () => {
+        const email = "test@test.com";
+        const name = "test";
+        const password = "passwd";
+
+        axios.post = jest.fn().mockResolvedValueOnce({
+            data: "OK"
+        });
+
+        const actual = await signUp(email, name, password)
+
+        expect(actual).toBe("OK")
+    });
+
+    it('email duplication check' ,async () => {
+        const email = "test@test.com";
+
+        axios.get = jest.fn().mockResolvedValueOnce({
+            data: true
+        });
+
+        const actual = await emailDuplicationCheck(email)
+
+        expect(actual).toBe(true)
+    });
+
+    it('name duplication check' ,async () => {
+        const email = "test";
+
+        axios.get = jest.fn().mockResolvedValueOnce({
+            data: true
+        });
+
+        const actual = await nameDuplicationCheck(email)
+
+        expect(actual).toBe(true)
+    });
 });

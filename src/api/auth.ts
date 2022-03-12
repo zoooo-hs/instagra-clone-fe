@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwtDecode, { JwtPayload } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { User } from "../model";
 
 interface JWT {
@@ -14,5 +14,37 @@ export const signIn = (email: string, password: string): Promise<User> => {
         return Promise.resolve(user);
     }).catch((e) => {
         return Promise.reject(null);
+    });
+}
+
+export const signUp = (email: string, name: string, password: string): Promise<String> => {
+    return axios.post("http://localhost:8080/auth/sign-up", {email, name, password}).then((result) => {
+        return Promise.resolve(result.data);
+    }).catch((e) => {
+        return Promise.reject("ERROR");
+    });
+}
+
+export const emailDuplicationCheck = (email: string): Promise<boolean> => {
+    return axios.get("http://localhost:8080/auth/email", {
+        params: {
+            "keyword": email
+        }
+    }).then((result) => {
+        return Promise.resolve(result.data);
+    }).catch((e) => {
+        return Promise.reject("ERROR");
+    });
+}
+
+export const nameDuplicationCheck = (name: string): Promise<boolean> => {
+    return axios.get("http://localhost:8080/auth/name", {
+        params: {
+            "keyword": name
+        }
+    }).then((result) => {
+        return Promise.resolve(result.data);
+    }).catch((e) => {
+        return Promise.reject("ERROR");
     });
 }
