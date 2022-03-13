@@ -1,50 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { RedirectLocationState } from ".";
 import { signIn } from "../../api/auth";
-import { User } from "../../model";
+import { RootState } from "../../reducer";
 
-function emptyUser(): User {
-  return {email: "", name: "", id: -1, bio:"", photo: {id:-1, path:""}};
-}
+import {didSignIn} from '../../reducer/auth';
 
 export default function SignIn() {
-  
+    const auth = useSelector((state: RootState) => state.auth).email !== "";
     const [values, setValues] = useState({email: "", password: ""});
-    const [user, setUser] = useState<User>(emptyUser());
-    const [isAuthenticated, setAuthenticated] = useState(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = (location.state as RedirectLocationState)?.from?.pathname || "/";
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
       setValues({...values, [name]: value});
     }
 
-    useEffect(() => {}, [isAuthenticated])
-
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
-      const signInedUser = await signIn(values.email, values.password);
-      setUser({...signInedUser});
-      setAuthenticated(true);
+      signIn(values.email, values.password).then(user => {
+        dispatch(didSignIn(user));
+        navigate(from);
+      });
     }
 
-    const handleLogout = () => {
-      setUser(emptyUser());
-      setAuthenticated(false);
-    }
-
-    if (!isAuthenticated) {
-      return (
-      <div className="sing-in-form">
-        <h2>Sign In</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input type="text" id="email" name="email" value={values.email} onChange={handleChange}/>
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" value={values.password} onChange={handleChange}/>
-          <input type="submit" value="Login" />
-        </form>
-      </div>
-      )
+    if (auth) {
+      return <Navigate to={from}/>
     } else {
-      return (<div><h1>hello {user.name}</h1><button onClick={handleLogout}>logout</button></div>)
+      return (
+        <div className="sing-in-form">
+          <h2>Sign In</h2>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Email</label>
+            <input type="text" id="email" name="email" value={values.email} onChange={handleChange}/>
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" value={values.password} onChange={handleChange}/>
+            <input type="submit" value="Sign In" />
+            <button onClick={() => navigate("/sign-up", {state: {path: from}, replace:true})}>Sign Up</button>
+          </form>
+        </div>
+      )
     }
 }

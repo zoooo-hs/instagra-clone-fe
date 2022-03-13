@@ -1,10 +1,19 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { RedirectLocationState } from ".";
 import { emailDuplicationCheck, nameDuplicationCheck, signUp } from "../../api/auth";
+import { RootState } from "../../reducer";
 
 export default function SignUp() {
-
+    const auth = useSelector((state: RootState) => state.auth).email !== "";
     const [values, setValues] = useState({email: "", name: "", password: ""});
     const [duplicated, setDuplicated] = useState({email: true, name: true});
+
+    const navigate = useNavigate();
+
+    const location = useLocation();
+    const from = (location.state as RedirectLocationState)?.from?.pathname || "/";
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
@@ -27,24 +36,29 @@ export default function SignUp() {
 
     const handleSubmit = (event: React.FormEvent) => {
       event.preventDefault();
-      // sign-up api call
-      signUp(values.email, values.name, values.password);
+      signUp(values.email, values.name, values.password).then(result => {
+        navigate(from);
+      });
     }
   
-    return(
-      <div className="sign-up-form">
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input type="text" id="email" name="email" value={values.email} onChange={handleChange}/>
-          <button onClick={checkEmailDuplication}>이메일 중복확인</button>
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" name="name" value={values.name} onChange={handleChange}/>
-          <button onClick={checkNameDuplication}>이름 중복확인</button>
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" value={values.password} onChange={handleChange}/>
-          <input type="submit" value="Submit" disabled={duplicated.email || duplicated.name}/>
-        </form>
-      </div>
-    )
+    if (auth) {
+      return <Navigate to={from}/>
+    } else {
+      return(
+        <div className="sign-up-form">
+          <h2>Sign Up</h2>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Email</label>
+            <input type="text" id="email" name="email" value={values.email} onChange={handleChange}/>
+            <button onClick={checkEmailDuplication}>이메일 중복확인</button>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name="name" value={values.name} onChange={handleChange}/>
+            <button onClick={checkNameDuplication}>이름 중복확인</button>
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" value={values.password} onChange={handleChange}/>
+            <input type="submit" value="Submit" disabled={duplicated.email || duplicated.name}/>
+          </form>
+        </div>
+      )
+    }
 }
