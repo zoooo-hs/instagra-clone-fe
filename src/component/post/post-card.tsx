@@ -7,12 +7,14 @@ function computeDescriptino(description: string) {
         if (i%2 === 0) {
             result.push(parts[i])
         }
-        if (parts[i][0] === "#") {
-            // hash tag
-            result.push(<span className="hashtag" key={i}><a href={"/hash-tag/#"+parts[i]}>{parts[i]}</a></span>)
-        } else {
-            // mention user
-            result.push(<span className="mention" key={i}><a href={"/user/@"+parts[i]}>{"@"+parts[i]}</a></span>)
+        else {
+            if (parts[i][0] === "#") {
+                // hash tag
+                result.push(<span className="hashtag" key={i}><a href={"/hash-tag/#"+parts[i]}>{parts[i]}</a></span>)
+            } else {
+                // mention user
+                result.push(<span className="mention" key={i}><a href={"/user/@"+parts[i]}>{"@"+parts[i]}</a></span>)
+            }
         }
     }
     return <p className="post-description">{result}</p>;

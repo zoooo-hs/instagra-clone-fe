@@ -5,7 +5,6 @@ import SignUp from './component/auth/sign-up';
 import GND from './component/gnd';
 import PostList from './component/post/post-list';
 import { RequireAuth } from './component/RequireAuth';
-import posts from './mock/posts';
 
 function App() {
   return (
@@ -15,7 +14,7 @@ function App() {
         <Route path="sign-in" element={<SignIn/>} />
         <Route path="sign-up" element={<SignUp/>} />
         <Route path="/" element={
-          <RequireAuth component={<PostList posts={posts}/>}/>
+          <RequireAuth component={<PostList />}/>
         } />
       </Routes>
     </div>

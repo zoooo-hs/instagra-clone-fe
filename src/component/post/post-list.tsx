@@ -1,19 +1,24 @@
-import { Post } from "../../model"
-import PostCard from "./post-card"
+import { useEffect, useState } from "react";
+import { fetch } from "../../api/post";
+import { Post } from "../../model";
+import PostCard from "./post-card";
 
-interface PostListProps {
-    posts: Post[]
-}
+export default function PostList() {
+    const [posts, setPosts] = useState<Post[]>([]);
 
-export default function PostList(prop: PostListProps) {
-
-    const { posts } = prop
-
-    const postList = posts.map((post) => <li key={post.id}><PostCard {...post}/></li>)
+    useEffect(() => {
+        if (posts.length === 0) {
+            fetch().then(result => {
+                setPosts(result);
+            });
+        } else {
+            return;
+        }
+    }, [posts]);
 
     return(
         <ul>
-            {postList}            
+            {posts?.map((post) => <li key={post.id}><PostCard {...post}/></li>)}            
         </ul>
     )
 }
