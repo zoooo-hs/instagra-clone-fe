@@ -12,6 +12,7 @@ export const signIn = (email: string, password: string): Promise<User> => {
         let jwt: JWT  = result.data;
         const user: User = jwtDecode<User>(jwt.access_token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
+        window.sessionStorage.setItem('rt', jwt.refresh_token);
         return Promise.resolve(user);
     }).catch((e) => {
         return Promise.reject(null);
@@ -24,6 +25,11 @@ export const signUp = (email: string, name: string, password: string): Promise<S
     }).catch((e) => {
         return Promise.reject("ERROR");
     });
+}
+
+export const signOut = () => {
+    window.sessionStorage.removeItem('rt');
+    axios.defaults.headers.common['Authorization'] = '';
 }
 
 export const emailDuplicationCheck = (email: string): Promise<boolean> => {
@@ -47,5 +53,21 @@ export const nameDuplicationCheck = (name: string): Promise<boolean> => {
         return Promise.resolve(result.data);
     }).catch((e) => {
         return Promise.reject("ERROR");
+    });
+}
+
+export const refresh = (): Promise<User> => {
+    const rt = window.sessionStorage.getItem('rt');
+    if (rt === null) {
+        return Promise.reject(null);
+    }
+    return axios.post("http://localhost:8080/auth/refresh", {access_token: rt, refresh_token: rt}).then((result) => {
+        let jwt: JWT  = result.data;
+        const user: User = jwtDecode<User>(jwt.access_token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
+        window.sessionStorage.setItem('rt', jwt.refresh_token);
+        return Promise.resolve(user);
+    }).catch((e) => {
+        return Promise.reject(null);
     });
 }

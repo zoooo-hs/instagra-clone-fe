@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "../api/auth";
 import { RootState } from "../reducer";
-import { signOut } from "../reducer/auth";
+import { didSignOut } from "../reducer/auth";
 
 export default function GND() {
   let auth = useSelector((state: RootState) => state.auth);
@@ -13,8 +14,9 @@ export default function GND() {
   }
 
   const logout = () => {
-    dispatch(signOut())
-    goToRoot();
+    signOut();
+    dispatch(didSignOut());
+    window.location.reload();
   }
 
   const logoutButton = <button onClick={logout}>sign out</button>

@@ -13,9 +13,9 @@ export const didSignIn = (user: User) => {
     }
 }
 
-export const signOut = () => {
+export const didSignOut = () => {
     return {
-        type: DID_SIGN_IN,
+        type: SIGN_OUT,
         initialUser
     }
 }
