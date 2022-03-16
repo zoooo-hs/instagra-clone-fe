@@ -1,27 +1,26 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { fetch } from "../../api/post";
-import { RootState } from "../../reducer";
-import { didFetchPost, PostListState } from "../../reducer/post";
+import { Post } from "../../model";
 import PostCard from "./post-card";
 
 export default function PostList() {
-    const postList: PostListState = useSelector((state: RootState) => state.posts);
-    const dispatch = useDispatch();
+    const [isFetched, setFetched] = useState(false);
+    const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        if (postList.isFetched === false) {
+        if (isFetched === false) {
             fetch().then(result => {
-                dispatch(didFetchPost(result));
+                setPosts(result);
+                setFetched(true);
             });
         } else {
             return;
         }
-    }, [postList, dispatch]);
+    }, [posts, isFetched]);
 
     return(
         <ul>
-            {postList.posts.map((post) => <li key={post.id}><PostCard {...post}/></li>)}            
+            {posts.map((post) => <li key={post.id}><PostCard {...post}/></li>)}            
         </ul>
     )
 }

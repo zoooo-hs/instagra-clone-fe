@@ -1,11 +1,17 @@
-import { combineReducers } from "redux";
+import { combineReducers, createStore } from "redux";
 import { auth } from "./auth";
-import { posts } from "./post";
+
+
+export interface Action<T> {
+    state: T,
+    type: string
+}
 
 const rootReducer = combineReducers({
     auth,
-    posts
 })
 export default rootReducer;
 
 export type RootState = ReturnType<typeof rootReducer>
+
+export const store = createStore(rootReducer);

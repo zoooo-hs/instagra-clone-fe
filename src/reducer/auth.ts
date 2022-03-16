@@ -1,35 +1,46 @@
+import { Action } from ".";
 import { User } from "../model";
 
-const initialUser = {email: "", name: "", id: -1, bio:"", photo: {id:-1, path:""}};
+export interface AuthState {
+    user: User,
+    isAthendticated: boolean
+}
+
+type AuthAction = Action<AuthState>;
+
+const initialState: AuthState = {
+    user: {email: "", name: "", id: -1, bio:"", photo: {id:-1, path:""}},
+    isAthendticated: false
+}
 
 const DID_SIGN_IN = "AUTH/DID_SIGN_IN";
 const SIGN_OUT = "AUTH/SIGN_OUT";
 
 
-export const didSignIn = (user: User) => {
+export const didSignIn = (user: User): AuthAction => {
     return {
         type: DID_SIGN_IN,
-        user
+        state: {
+            user: user,
+            isAthendticated: true
+        }
     }
 }
 
 export const didSignOut = () => {
     return {
         type: SIGN_OUT,
-        initialUser
+        state: initialState
     }
 }
 
-export const auth = (state = initialUser, action: {type: string, user: User}) => {
+export const auth = (state = initialState, action: AuthAction): AuthState => {
     switch (action.type) {
         case DID_SIGN_IN:
             return {
-                ...action.user
+                ...state, ...action.state
             };
         case SIGN_OUT:
-            return {
-                ...action.user
-            };
         default:
             return state;
     }

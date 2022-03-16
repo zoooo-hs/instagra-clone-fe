@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { RedirectLocationState } from ".";
 import { emailDuplicationCheck, nameDuplicationCheck, signUp } from "../../api/auth";
-import { RootState } from "../../reducer";
+import { store } from "../../reducer";
+import { AuthState } from "../../reducer/auth";
 
 export default function SignUp() {
-    const auth = useSelector((state: RootState) => state.auth).email !== "";
+    const {isAthendticated}: AuthState = store.getState().auth;
     const [values, setValues] = useState({email: "", name: "", password: ""});
     const [duplicated, setDuplicated] = useState({email: true, name: true});
 
@@ -41,7 +41,7 @@ export default function SignUp() {
       });
     }
   
-    if (auth) {
+    if (isAthendticated) {
       return <Navigate to={from}/>
     } else {
       return(

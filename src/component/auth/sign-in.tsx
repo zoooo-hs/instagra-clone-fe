@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { RedirectLocationState } from ".";
 import { signIn } from "../../api/auth";
-import { RootState } from "../../reducer";
-
-import {didSignIn} from '../../reducer/auth';
+import { store } from "../../reducer";
+import { AuthState, didSignIn } from '../../reducer/auth';
 
 export default function SignIn() {
-    const auth = useSelector((state: RootState) => state.auth).email !== "";
+    const {isAthendticated}: AuthState = store.getState().auth;
     const [values, setValues] = useState({email: "", password: ""});
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const location = useLocation();
@@ -25,12 +22,12 @@ export default function SignIn() {
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
       signIn(values.email, values.password).then(user => {
-        dispatch(didSignIn(user));
+        store.dispatch(didSignIn(user));
         navigate(from);
       });
     }
 
-    if (auth) {
+    if (isAthendticated) {
       return <Navigate to={from}/>
     } else {
       return (
