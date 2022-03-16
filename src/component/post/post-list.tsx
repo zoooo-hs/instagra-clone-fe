@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetch } from "../../api/post";
+import * as postAPI from "../../api/post";
 import { Post } from "../../model";
 import PostCard from "./post-card";
 
@@ -9,7 +9,7 @@ export default function PostList() {
 
     useEffect(() => {
         if (isFetched === false) {
-            fetch().then(result => {
+            postAPI.fetch().then(result => {
                 setPosts(result);
                 setFetched(true);
             });

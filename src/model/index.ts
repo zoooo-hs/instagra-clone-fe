@@ -3,8 +3,8 @@ export interface Post {
     description: string;
     photos: Photo[];
     user: User;
-    commentCount: number;
-    likeCount: number;
+    comment_count: number;
+    like_count: number;
     liked: boolean;
 }
 
@@ -24,4 +24,13 @@ export interface User {
 export interface SignIn {
     email: string;
     password: string;
+}
+
+export interface Comment {
+    id: number,
+    content: string,
+    user: User,
+    like_count: number,
+    liked: boolean,
+    comment_count: number
 }

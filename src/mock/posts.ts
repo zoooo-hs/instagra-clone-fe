@@ -22,8 +22,8 @@ const posts = [
                 "path": "/logo512.png"
             }
         },
-        "commentCount": 123,
-        "likeCount": 22,
+        "comment_count": 123,
+        "like_count": 22,
         "liked": true
     },
     {
@@ -49,8 +49,8 @@ const posts = [
                 "path": "/logo512.png"
             }
         },
-        "commentCount": 23,
-        "likeCount": 222,
+        "comment_count": 23,
+        "like_count": 222,
         "liked": false
     }
 ]
