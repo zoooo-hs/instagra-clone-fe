@@ -5,8 +5,10 @@ import { signIn } from "../../api/auth";
 import { store } from "../../reducer";
 import { AuthState, didSignIn } from '../../reducer/auth';
 
+export const path = "/sign-in";
+
 export default function SignIn() {
-    const {isAthendticated}: AuthState = store.getState().auth;
+    const {isAthenticated: isAthendticated}: AuthState = store.getState().auth;
     const [values, setValues] = useState({email: "", password: ""});
 
     const navigate = useNavigate();

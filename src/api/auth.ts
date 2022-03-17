@@ -1,6 +1,8 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { Dispatch } from "react";
 import { User } from "../model";
+import { didSignOut } from "../reducer/auth";
 
 interface JWT {
     access_token: string;
@@ -27,9 +29,11 @@ export const signUp = (email: string, name: string, password: string): Promise<S
     });
 }
 
-export const signOut = () => {
+export const signOut = (dispatch: Dispatch<any>) => {
     window.sessionStorage.removeItem('rt');
-    axios.defaults.headers.common['Authorization'] = '';
+    delete axios.defaults.headers.common['Authorization']
+
+    dispatch(didSignOut());
 }
 
 export const emailDuplicationCheck = (email: string): Promise<boolean> => {

@@ -5,8 +5,10 @@ import { emailDuplicationCheck, nameDuplicationCheck, signUp } from "../../api/a
 import { store } from "../../reducer";
 import { AuthState } from "../../reducer/auth";
 
+export const path = "/sign-up"
+
 export default function SignUp() {
-    const {isAthendticated}: AuthState = store.getState().auth;
+    const {isAthenticated: isAthendticated}: AuthState = store.getState().auth;
     const [values, setValues] = useState({email: "", name: "", password: ""});
     const [duplicated, setDuplicated] = useState({email: true, name: true});
 

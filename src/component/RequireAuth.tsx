@@ -8,7 +8,7 @@ import { didSignIn } from "../reducer/auth";
 export const RequireAuth = ({component}: {component: JSX.Element}) => {
     const location = useLocation();
 
-    let { isAthendticated } = useSelector((state: RootState) => state.auth);
+    let { isAthenticated: isAthendticated } = useSelector((state: RootState) => state.auth);
     const [isLoading, setLoading] = useState(true);
 
     const dispatch = useDispatch();

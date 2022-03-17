@@ -3,14 +3,14 @@ import { User } from "../model";
 
 export interface AuthState {
     user: User,
-    isAthendticated: boolean
+    isAthenticated: boolean
 }
 
 type AuthAction = Action<AuthState>;
 
 const initialState: AuthState = {
     user: {email: "", name: "", id: -1, bio:"", photo: {id:-1, path:""}},
-    isAthendticated: false
+    isAthenticated: false
 }
 
 const DID_SIGN_IN = "AUTH/DID_SIGN_IN";
@@ -22,7 +22,7 @@ export const didSignIn = (user: User): AuthAction => {
         type: DID_SIGN_IN,
         state: {
             user: user,
-            isAthendticated: true
+            isAthenticated: true
         }
     }
 }
@@ -37,10 +37,10 @@ export const didSignOut = () => {
 export const auth = (state = initialState, action: AuthAction): AuthState => {
     switch (action.type) {
         case DID_SIGN_IN:
+        case SIGN_OUT:
             return {
                 ...state, ...action.state
             };
-        case SIGN_OUT:
         default:
             return state;
     }

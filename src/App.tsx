@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import SignIn from './component/auth/sign-in';
+import SignIn, * as signIn from './component/auth/sign-in';
 import SignUp from './component/auth/sign-up';
 import GND from './component/gnd';
 import PostList from './component/post/post-list';
@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <GND />
       <Routes>
-        <Route path="sign-in" element={<SignIn/>} />
+        <Route path={signIn.path} element={<SignIn/>} />
         <Route path="sign-up" element={<SignUp/>} />
         <Route path="/" element={
           <RequireAuth component={<PostList />}/>

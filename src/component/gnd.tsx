@@ -3,40 +3,69 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../api/auth";
 import { RootState } from "../reducer";
-import { didSignOut } from "../reducer/auth";
+import { AuthState } from "../reducer/auth";
+
+import * as signIn from "./auth/sign-in";
+import * as signUp from "./auth/sign-up";
 
 export default function GND() {
-  const {user, isAthendticated} = useSelector((state: RootState) => state.auth);
+  const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
+  const title = "인스타그램 클론 코딩";
+
+  const strings = {
+    "title": "인스타그램 클론 코딩",
+    "profile": "내 정보",
+    "signOut": "로그아웃",
+    "signIn": "로그인",
+    "signUp": "회원가입"
+  }
+  const logo = {
+    id: -1,
+    path: "/logo.png"
+  };
+
+  if (user.photo === undefined || user.photo.id === -1) {
+    user.photo = {
+      id: -1,
+      path: "/default-profile.png"
+    };
+  }
+
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const naviate = useNavigate();
 
-  useEffect(() => {}, [isAthendticated])
+  useEffect(() => {
 
-  const goToRoot = () => {
-    naviate("/");
-  }
+  }, [isAthenticated, user, dispatch])
 
-  const logout = () => {
-    signOut();
-    dispatch(didSignOut());
-    window.location.reload();
-  }
-
-  const logoutButton = <button onClick={logout}>sign out</button>
-
-  const underTitle = () => {
-    if (isAthendticated) {
-      return <h2>{user.name}님 환영합니다. {logoutButton}</h2>
+  const UserMenus = () => {
+    if (isAthenticated) {
+      return (
+        <div>
+          <img className="profile-photo-small" src={user.photo.path} alt="" style={{"width": "48px", "height": "48px"}}/>
+          {/* TODO: user compoenent path 상수화 */}
+          <button onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
+          <button onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
+        </div>
+      )
     } else {
-      return <h2>환영합니다.</h2>
+      return (
+        <div>
+          <button onClick={() => {navigate(signIn.path)}}>{strings.signIn}</button>
+          <button onClick={() => {navigate(signUp.path)}}>{strings.signUp}</button>
+        </div>
+      )
     }
-
   }
 
-  return(
+  return (
     <div>
-      <h1 onClick={goToRoot}>Instagram Clone Project</h1>
-      {underTitle()}
+      <div onClick={() => {navigate("/")}}>
+        <img src={logo.path} alt="" style={{"width": "48px", "height": "48px"}}/>
+        <h1>{title}</h1>
+      </div>
+      <UserMenus/>
     </div>
   )
 }
