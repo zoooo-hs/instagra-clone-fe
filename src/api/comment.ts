@@ -6,7 +6,7 @@ import { Comment } from "../model";
 export const fetch = (id: number, type: CommentType): Promise<Comment[]> => {
     switch (type) {
         case "PostComment":
-            return axios.get(`http://localhost:8080/post/${id}/comment`, {
+            return axios.get(`/post/${id}/comment`, {
                 params: {
                     index: 0,
                     size: 20
@@ -19,7 +19,7 @@ export const fetch = (id: number, type: CommentType): Promise<Comment[]> => {
                 return Promise.resolve([]);
             });
         case "CommentComment":
-            return axios.get(`http://localhost:8080/comment/${id}/comment`, {
+            return axios.get(`/comment/${id}/comment`, {
                 params: {
                     index: 0,
                     size: 20

@@ -10,7 +10,7 @@ interface JWT {
 }
 
 export const signIn = (dispatch: Dispatch<any>, email: string, password: string) => {
-    return axios.post("http://localhost:8080/auth/sign-in", {email, password}).then((result) => {
+    return axios.post("/auth/sign-in", {email, password}).then((result) => {
         let jwt: JWT  = result.data;
         const user: User = jwtDecode<User>(jwt.access_token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
@@ -21,7 +21,7 @@ export const signIn = (dispatch: Dispatch<any>, email: string, password: string)
 }
 
 export const signUp = (email: string, name: string, password: string): Promise<String> => {
-    return axios.post("http://localhost:8080/auth/sign-up", {email, name, password});
+    return axios.post("/auth/sign-up", {email, name, password});
 }
 
 export const signOut = (dispatch: Dispatch<any>) => {
@@ -32,7 +32,7 @@ export const signOut = (dispatch: Dispatch<any>) => {
 }
 
 export const checkEmailDuplication = (email: string): Promise<boolean> => {
-    return axios.get("http://localhost:8080/auth/email", {
+    return axios.get("/auth/email", {
         params: {
             "keyword": email
         }
@@ -40,7 +40,7 @@ export const checkEmailDuplication = (email: string): Promise<boolean> => {
 }
 
 export const checkNameDuplication = (name: string): Promise<boolean> => {
-    return axios.get("http://localhost:8080/auth/name", {
+    return axios.get("/auth/name", {
         params: {
             "keyword": name
         }
@@ -52,7 +52,7 @@ export const refresh = (): Promise<User> => {
     if (rt === null) {
         return Promise.reject(null);
     }
-    return axios.post("http://localhost:8080/auth/refresh", {access_token: rt, refresh_token: rt}).then((result) => {
+    return axios.post("/auth/refresh", {access_token: rt, refresh_token: rt}).then((result) => {
         let jwt: JWT  = result.data;
         const user: User = jwtDecode<User>(jwt.access_token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;

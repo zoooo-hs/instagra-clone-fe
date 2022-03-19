@@ -3,7 +3,7 @@ import FormData from "form-data";
 import { Post } from "../model";
 
 export const fetch = (): Promise<Post[]> => {
-    return axios.get("http://localhost:8080/post",
+    return axios.get("/post",
         {
             params: {
                 index: 0,
@@ -26,7 +26,7 @@ export const post = (formData: {description: string, files: File[]}): Promise<Po
     for (let i = 0; i < files.length; i++) {
         fd.append("files", files[i]);
     }
-    return axios.post("http://localhost:8080/post", fd, {
+    return axios.post("/post", fd, {
         "headers": {
         "Content-Type": "multipart/form-data"
         }
