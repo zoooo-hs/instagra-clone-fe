@@ -1,20 +1,15 @@
 import { Comment } from "../../model";
+import { Content, LikeIndicator, UserBrief } from "../common";
+import { CommentIndicator } from "./comment-indicator";
 
 export const CommentCard = (comment: Comment) => {
-
-    const {content, user, like_count, liked} = comment;
-
-    // TODO: like component 만들기
-    const heart = liked === true ? <i>💙</i> : <i>💔</i>
-
+    const {content, user, like_count, liked, id, comment_count} = comment;
     return (
         <div>
-            <div>
-                {/* <img src={user.photo.path} alt="" width='48px' height='48px' /> */}
-                <span>{user.name}</span>
-            </div>
-            <p>{content}</p>
-            <button>{heart} <span className="post-like-count">{like_count}</span></button>
+            <UserBrief {...user}/>
+            <Content description={content}/>
+            <LikeIndicator type="CommentLike" liked={liked} id={id} count={like_count}/>
+            <CommentIndicator count={comment_count} type={"CommentComment"} id={id}/>
         </div>
     )
 };

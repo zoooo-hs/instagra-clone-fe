@@ -1,13 +1,11 @@
 import axios, { AxiosError } from "axios";
+import { CommentType } from "../component/comment";
 import { Comment } from "../model";
 
 
-export const POST_COMMENT = "POST_COMMENT";
-export const COMMENT_COMMENT = "COMMENT_COMMENT";
-
-export const fetch = (id: number, type: string): Promise<Comment[]> => {
+export const fetch = (id: number, type: CommentType): Promise<Comment[]> => {
     switch (type) {
-        case POST_COMMENT:
+        case "PostComment":
             return axios.get(`http://localhost:8080/post/${id}/comment`, {
                 params: {
                     index: 0,
@@ -20,7 +18,7 @@ export const fetch = (id: number, type: string): Promise<Comment[]> => {
                 }
                 return Promise.resolve([]);
             });
-        case COMMENT_COMMENT:
+        case "CommentComment":
             return axios.get(`http://localhost:8080/comment/${id}/comment`, {
                 params: {
                     index: 0,
