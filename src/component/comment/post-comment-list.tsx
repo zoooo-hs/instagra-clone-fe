@@ -17,7 +17,7 @@ export const PostCommentList = (prop: {postId: number}) => {
         } else {
             return;
         }
-    }, [comments, isFetched, postId]);
+    }, [isFetched, postId]);
 
 
     return(

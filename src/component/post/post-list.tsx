@@ -16,7 +16,7 @@ export default function PostList() {
         } else {
             return;
         }
-    }, [posts, isFetched]);
+    }, [isFetched]);
 
     return(
         <ul>
