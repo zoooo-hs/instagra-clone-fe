@@ -5,6 +5,7 @@ import { signOut } from "../api/auth";
 import { RootState } from "../reducer";
 import { AuthState } from "../reducer/auth";
 
+import * as postForm from "./post/post-form";
 import * as signIn from "./auth/sign-in";
 import * as signUp from "./auth/sign-up";
 
@@ -17,7 +18,8 @@ export default function GND() {
     "profile": "내 정보",
     "signOut": "로그아웃",
     "signIn": "로그인",
-    "signUp": "회원가입"
+    "signUp": "회원가입",
+    "postForm": "새 글 작성"
   }
   const logo = {
     id: -1,
@@ -47,6 +49,7 @@ export default function GND() {
           {/* TODO: user compoenent path 상수화 */}
           <button onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
           <button onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
+          <button onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
         </div>
       )
     } else {
