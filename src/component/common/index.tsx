@@ -72,3 +72,9 @@ export function UserBrief (user: User) {
         </div>
     )
 }
+
+export interface ResourcePage {
+    index: number,
+    size?: number,
+    lastPage: boolean
+}

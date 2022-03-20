@@ -3,13 +3,13 @@ import { CommentType } from "../component/comment";
 import { Comment } from "../model";
 
 
-export const fetch = (id: number, type: CommentType): Promise<Comment[]> => {
+export const fetch = (id: number, type: CommentType, index: number): Promise<Comment[]> => {
     switch (type) {
         case "PostComment":
             return axios.get(`/post/${id}/comment`, {
                 params: {
-                    index: 0,
-                    size: 20
+                    index,
+                    size: 4
                 }
             }).then((result) => Promise.resolve(result.data))
             .catch((e: AxiosError) => {

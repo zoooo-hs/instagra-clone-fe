@@ -2,12 +2,12 @@ import axios, { AxiosError } from "axios";
 import FormData from "form-data";
 import { Post } from "../model";
 
-export const fetch = (): Promise<Post[]> => {
+export const fetch = (index: number): Promise<Post[]> => {
     return axios.get("/post",
         {
             params: {
-                index: 0,
-                size: 20
+                index,
+                size: 4
             }
         }).then((result) => Promise.resolve(result.data))
         .catch((e: AxiosError) => {
@@ -28,7 +28,7 @@ export const post = (formData: {description: string, files: File[]}): Promise<Po
     }
     return axios.post("/post", fd, {
         "headers": {
-        "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data"
         }
     }).then(result => result.data);
 }
