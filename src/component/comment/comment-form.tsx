@@ -32,7 +32,7 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: () =
             <form onSubmit={handleSubmit}>
                 <input type="text" name="content" value={values.content} onChange={handleChange} required/>
                 <label htmlFor="content">{strings.content}</label>
-                <input type="submit" value={strings.submit} />
+                <button type="submit">{strings.submit}</button>
             </form>
         </div>
     )

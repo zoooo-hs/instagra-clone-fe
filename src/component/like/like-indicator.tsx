@@ -25,8 +25,8 @@ export function LikeIndicator (prop: {type: LikeType, id: number, liked: boolean
     }
 
     return (
-        <div>
-           <b>{count}</b><button onClick={likeHandle}>{heart}</button>
+        <div className="indicator-inline">
+           <button className="" onClick={likeHandle}>Likes <b>{count}</b> {heart}</button>
         </div>
     )
 }

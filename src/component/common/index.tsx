@@ -5,7 +5,7 @@ export function HashTag(prop:{hashtag: string}) {
     if (hashtag[0] !== "#") {
         return <span>{hashtag}</span>
     }
-    return <span className="hashtag"><a href={"/hash-tag/"+prop.hashtag.substring(1)}>{prop.hashtag}</a></span>
+    return <span className="hashtag"><a className="bold-href" href={"/hash-tag/"+prop.hashtag.substring(1)}>{prop.hashtag}</a></span>
 }
 
 export function Mention(prop:{mention: string}) {
@@ -13,7 +13,7 @@ export function Mention(prop:{mention: string}) {
     if (mention[0] !== "@") {
         return <span>{mention}</span>
     }
-    return <span className="mention"><a href={"/user/"+mention.substring(1)}>{mention}</a></span>
+    return <span className="mention"><a className="bold-href" href={"/user/"+mention.substring(1)}>{mention}</a></span>
 }
 
 export function Content(prop: {description: string}) {
@@ -37,8 +37,13 @@ export function Content(prop: {description: string}) {
 }
 
 export function SquareImage (prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" className="post-img" width={prop.size} height={prop.size} />
+    return <img src={prop.src} alt="" className="post-img"/>
 }
+
+export function RoundImage (prop: {src: string, size: string}) {
+    return <img src={prop.src} alt="" width={prop.size} height={prop.size} style={{"borderRadius": "50%", "padding": "5px"}}/>
+}
+
 
 export function UserBrief (user: User) {
 
@@ -52,8 +57,8 @@ export function UserBrief (user: User) {
     }
 
     return (
-        <div>
-            <SquareImage src={photo.path} size={"48px"}/>
+        <div className="user-brief">
+            <RoundImage src={photo.path} size={"30px"}/>
             <Mention mention={"@"+name}/>
         </div>
     )

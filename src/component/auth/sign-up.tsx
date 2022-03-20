@@ -71,7 +71,7 @@ export default function SignUp() {
             <label htmlFor="password">{strings.password}</label>
             <input type="password" id="password" name="password" value={values.password} onChange={handleChange} required/>
 
-            <input type="submit" value={strings.submit} disabled={duplicated.email || duplicated.name}/>
+            <button type="submit" disabled={duplicated.email || duplicated.name}>{strings.submit}</button>
           </form>
         </div>
       )

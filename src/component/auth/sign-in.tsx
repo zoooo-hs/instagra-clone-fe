@@ -49,7 +49,7 @@ export default function SignIn() {
             <label htmlFor="password">{strings.password}</label>
             <input type="password" name="password" value={values.password} onChange={handleChange} required/>
 
-            <input type="submit" value={strings.submit} />
+            <button type="submit">{strings.submit}</button>
             <button onClick={() => navigate(signUp.path, {state: {path: from}, replace:true})}>{strings.signUp}</button>
           </form>
         </div>

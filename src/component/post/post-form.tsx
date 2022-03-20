@@ -18,7 +18,8 @@ export default function PostForm() {
 
     const strings = {
       "photos": "사진",
-      "description": "설명"
+      "description": "설명",
+      "submit": "제출",
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +66,7 @@ export default function PostForm() {
           <label htmlFor="files">{strings.photos}</label>
           <input type="text" name="description" onChange={handleChange} required/>
           <label htmlFor="description">{strings.description}</label>
-          <input type="submit" value="Post" disabled={disableSubmit()}/>
+          <button type="submit" disabled={disableSubmit()}>{strings.submit}</button>
         </form>
       </div>
     )

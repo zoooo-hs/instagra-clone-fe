@@ -9,18 +9,22 @@ import { RequireAuth } from './component/RequireAuth';
 
 function App() {
   return (
-    <div className="App">
-      <GND />
-      <Routes>
-        <Route path={signIn.path} element={<SignIn/>} />
-        <Route path="sign-up" element={<SignUp/>} />
-        <Route path="/post-form" element={
-          <RequireAuth component={<PostForm />}/>
-        } />
-        <Route path="/" element={
-          <RequireAuth component={<PostList />}/>
-        } />
-      </Routes>
+    <div className="window-background">
+      <div className="window">
+        <GND />
+        <div className='window-body'>
+          <Routes>
+            <Route path={signIn.path} element={<SignIn/>} />
+            <Route path="sign-up" element={<SignUp/>} />
+            <Route path="/post-form" element={
+              <RequireAuth component={<PostForm />}/>
+            } />
+            <Route path="/" element={
+              <RequireAuth component={<PostList />}/>
+            } />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }

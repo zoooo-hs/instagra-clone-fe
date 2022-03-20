@@ -37,9 +37,7 @@ export default function PostList() {
 
     return(
         <div>
-            <ul>
-                {posts.map((post) => <li key={post.id}><PostCard {...post}/></li>)}            
-            </ul>
+            {posts.map((post) => <PostCard key={post.id} {...post}/>)}            
             <button disabled={page.lastPage} onClick={loadMorePost}>{strings.loadMorePost}</button>
         </div>
     )

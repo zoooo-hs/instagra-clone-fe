@@ -10,7 +10,7 @@ export function CommentIndicator(prop: {count: number, type: CommentType, id: nu
     // TODO: 답글 작성 form 컴포넌트 작성
 
     return (
-        <div>
+        <div className="indicator-inline">
             <button onClick={() => {setOpenComment(!openComment)}}>{openComment ? "Close" : "Open"} comment {count}</button>
             {openComment ? <CommentList id={id} type={type}/> : ""}
         </div>

@@ -13,10 +13,10 @@ export function PhotoList(prop: {photos: Photo[], handleClick?: (index: number)=
     }
 
     return (
-        <div>
+        <div className="post-photo-list">
             {photos.map((photo, index) => 
-                <div key={index}  onClick={() => {handleClick(index)}}>
-                    <SquareImage src={photo.path} size={"128px"}/>
+                <div className="post-photo" key={index}  onClick={() => {handleClick(index)}}>
+                    <SquareImage src={photo.path} size={"500px"}/>
                 </div>
             )}
         </div>

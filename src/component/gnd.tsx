@@ -1,25 +1,41 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { signOut } from "../api/auth";
 import { RootState } from "../reducer";
 import { AuthState } from "../reducer/auth";
-
-import * as postForm from "./post/post-form";
 import * as signIn from "./auth/sign-in";
 import * as signUp from "./auth/sign-up";
+import * as postForm from "./post/post-form";
+
 
 export default function GND() {
   const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
+  const location = useLocation();
+
   const title = "인스타그램 클론 코딩";
 
   const strings = {
     "title": "인스타그램 클론 코딩",
+    "feeds": "피드",
     "profile": "내 정보",
     "signOut": "로그아웃",
     "signIn": "로그인",
     "signUp": "회원가입",
     "postForm": "새 글 작성"
+  }
+
+  function Title(path: string) {
+    switch (path) {
+      case postForm.path:
+        return title + " : " + strings.postForm
+      case signIn.path:
+        return title + " : " + strings.signIn
+      case signUp.path:
+        return title + " : " + strings.signUp
+      default:
+        return title;
+    }
   }
   const logo = {
     id: -1,
@@ -45,11 +61,11 @@ export default function GND() {
     if (isAthenticated) {
       return (
         <div>
-          <img className="profile-photo-small" src={user.photo.path} alt="" style={{"width": "48px", "height": "48px"}}/>
           {/* TODO: user compoenent path 상수화 */}
+          <button onClick={() => {navigate("/")}}>{strings.feeds}</button>
+          <button onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
           <button onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
           <button onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
-          <button onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
         </div>
       )
     } else {
@@ -64,11 +80,13 @@ export default function GND() {
 
   return (
     <div>
-      <div onClick={() => {navigate("/")}}>
-        <img src={logo.path} alt="" style={{"width": "48px", "height": "48px"}}/>
-        <h1>{title}</h1>
+      <div className="title-bar">
+        <div className="title-bar-text" onClick={() => {navigate("/")}}>
+          <img src={logo.path} alt="" width={"11px"}/>{Title(location.pathname)}
+        </div>
       </div>
       <UserMenus/>
+      <hr />
     </div>
   )
 }
