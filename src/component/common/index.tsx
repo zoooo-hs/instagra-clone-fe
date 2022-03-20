@@ -36,20 +36,6 @@ export function Content(prop: {description: string}) {
     return <p className="post-description">{result}</p>;
 }
 
-export type LikeType = "CommentLike" | "PostLike";
-
-// TODO: count 클릭 하면 like한 사람들 정보 나오는 component 추가
-export function LikeIndicator (prop: {type: LikeType, id: number, liked: boolean, count: number}) {
-    const {liked, count} = prop;
-    const heart = liked ? <i>💛</i> : <i>🖤</i>
-
-    return (
-        <div>
-           <b>{count}</b><button>{heart}</button>
-        </div>
-    )
-}
-
 export function SquareImage (prop: {src: string, size: string}) {
     return <img src={prop.src} alt="" className="post-img" width={prop.size} height={prop.size} />
 }

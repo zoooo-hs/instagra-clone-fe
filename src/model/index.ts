@@ -6,6 +6,7 @@ export interface Post {
     comment_count: number;
     like_count: number;
     liked: boolean;
+    liked_id: number;
 }
 
 export interface Photo {
@@ -32,5 +33,6 @@ export interface Comment {
     user: User,
     like_count: number,
     liked: boolean,
-    comment_count: number
+    comment_count: number,
+    liked_id: number,
 }
