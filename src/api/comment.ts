@@ -35,3 +35,18 @@ export const fetch = (id: number, type: CommentType, index: number): Promise<Com
             return Promise.reject("");
     }
 }
+
+export const post = (id: number, content: string, type: CommentType): Promise<Comment> =>  {
+    switch (type) {
+        case "PostComment":
+            return axios.post(`/post/${id}/comment`, {
+                content
+            }).then(result => result.data);
+        case "CommentComment":
+            return axios.post(`/comment/${id}/comment`, {
+                content
+            }).then(result => result.data);
+        default:
+            return Promise.reject();
+    }
+}

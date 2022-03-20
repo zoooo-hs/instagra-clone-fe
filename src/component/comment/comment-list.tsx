@@ -4,6 +4,7 @@ import { CommentCard } from "./comment-card";
 import * as commentAPI from "../../api/comment";
 import { CommentType } from ".";
 import { ResourcePage } from "../common";
+import { CommentForm } from "./comment-form";
 
 export function CommentList (prop: {id: number, type: CommentType}) {
     const { id, type } = prop;
@@ -36,8 +37,15 @@ export function CommentList (prop: {id: number, type: CommentType}) {
         setFetched(false);
     }
 
+    const onPostComment = () => {
+        setPage({index: 0, lastPage: false});
+        setComments([]);
+        setFetched(false);
+    }
+
     return(
         <div>
+            <CommentForm id={id} type={type} callback={onPostComment}/>
             {comments.map(comment => <CommentCard key={comment.id} {...comment}/>)}
             <button disabled={page.lastPage} onClick={loadMoreComment}>{strings.loadMoreComment}</button>
         </div>

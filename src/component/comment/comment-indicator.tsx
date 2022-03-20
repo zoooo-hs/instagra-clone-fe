@@ -11,8 +11,7 @@ export function CommentIndicator(prop: {count: number, type: CommentType, id: nu
 
     return (
         <div>
-            <button onClick={() => {setOpenComment(!openComment)}} disabled={count === 0}>{openComment ? "Close" : "Open"} comment {count}</button>
-            <button>답글 작성하기</button>
+            <button onClick={() => {setOpenComment(!openComment)}}>{openComment ? "Close" : "Open"} comment {count}</button>
             {openComment ? <CommentList id={id} type={type}/> : ""}
         </div>
     )
