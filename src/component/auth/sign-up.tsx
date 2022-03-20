@@ -22,8 +22,7 @@ export default function SignUp() {
       password: "비밀번호",
       signUp: "회원가입",
       submit: "제출",
-      checkEmailDuplication: "이메일 중복 확인",
-      checkNameDuplication: "이름 중복 확인"
+      checkDuplication: "중복 확인",
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,23 +56,27 @@ export default function SignUp() {
       return <Navigate to={from}/>
     } else {
       return(
-        <div className="sign-up-form">
-          <h2>{strings.signUp}</h2>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">{strings.email}</label>
-            <input type="text" id="email" name="email" value={values.email} onChange={handleChange} required/>
-            <button onClick={checkEmailDuplication}>{strings.checkEmailDuplication}</button>
+        <article role="tabpanel" id="ic-tab-sign-up">
+          <div className="sign-up-form">
+            <form onSubmit={handleSubmit}>
+              <div className="field-row-stacked auth-input">
+                <label htmlFor="email">{strings.email}</label>
+                <input type="text" id="email" name="email" value={values.email} onChange={handleChange} onBlur={checkEmailDuplication} required/>
+                {/* <button onClick={checkEmailDuplication}>{strings.checkDuplication}</button> */}
 
-            <label htmlFor="name">{strings.name}</label>
-            <input type="text" id="name" name="name" value={values.name} onChange={handleChange} required/>
-            <button onClick={checkNameDuplication}>{strings.checkNameDuplication}</button>
+                <label htmlFor="name">{strings.name}</label>
+                <input type="text" id="name" name="name" value={values.name} onChange={handleChange} onBlur={checkNameDuplication} required/>
+                {/* <button onClick={checkNameDuplication}>{strings.checkDuplication}</button> */}
 
-            <label htmlFor="password">{strings.password}</label>
-            <input type="password" id="password" name="password" value={values.password} onChange={handleChange} required/>
-
-            <button type="submit" disabled={duplicated.email || duplicated.name}>{strings.submit}</button>
-          </form>
-        </div>
+                <label htmlFor="password">{strings.password}</label>
+                <input type="password" id="password" name="password" value={values.password} onChange={handleChange} required/>
+              </div>
+              <section className="field-row">
+                <button type="submit" disabled={duplicated.email || duplicated.name}>{strings.submit}</button>
+              </section>
+            </form>
+          </div>
+        </article>
       )
     }
 }

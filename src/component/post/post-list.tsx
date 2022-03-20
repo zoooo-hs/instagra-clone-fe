@@ -36,9 +36,9 @@ export default function PostList() {
     }
 
     return(
-        <div>
+        <article role="tabpanel" id="rootA">
             {posts.map((post) => <PostCard key={post.id} {...post}/>)}            
             <button disabled={page.lastPage} onClick={loadMorePost}>{strings.loadMorePost}</button>
-        </div>
+        </article>
     )
 }

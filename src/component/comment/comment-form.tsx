@@ -9,7 +9,7 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: () =
     const strings = {
         "title": "댓글 작성",
         "content": "내용",
-        "submit": "제출"
+        "submit": "댓글 작성"
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,11 +28,11 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: () =
 
     return (
         <div>
-            <span>{strings.title}</span>
             <form onSubmit={handleSubmit}>
+              <div className="field-row">
                 <input type="text" name="content" value={values.content} onChange={handleChange} required/>
-                <label htmlFor="content">{strings.content}</label>
                 <button type="submit">{strings.submit}</button>
+              </div>
             </form>
         </div>
     )

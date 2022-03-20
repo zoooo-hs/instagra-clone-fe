@@ -60,20 +60,25 @@ export default function GND() {
   const UserMenus = () => {
     if (isAthenticated) {
       return (
-        <div>
+        <section className="tabs">
           {/* TODO: user compoenent path 상수화 */}
-          <button onClick={() => {navigate("/")}}>{strings.feeds}</button>
-          <button onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
-          <button onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
-          <button onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
-        </div>
+          <menu role="tablist">
+            <button role="tab" aria-selected="true" aria-controls="rootA" onClick={() => {navigate("/")}}>{strings.feeds}</button>
+            <button role="tab" onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
+            <button role="tab" onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
+            <button role="tab" onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
+          </menu>
+
+        </section>
       )
     } else {
       return (
-        <div>
-          <button onClick={() => {navigate(signIn.path)}}>{strings.signIn}</button>
-          <button onClick={() => {navigate(signUp.path)}}>{strings.signUp}</button>
-        </div>
+        <section className="tabs">
+          <menu role="tablist">
+            <button role="tab" onClick={() => {navigate(signIn.path)}}>{strings.signIn}</button>
+            <button role="tab" onClick={() => {navigate(signUp.path)}}>{strings.signUp}</button>
+          </menu>
+        </section>
       )
     }
   }
@@ -82,11 +87,10 @@ export default function GND() {
     <div>
       <div className="title-bar">
         <div className="title-bar-text" onClick={() => {navigate("/")}}>
-          <img src={logo.path} alt="" width={"11px"}/>{Title(location.pathname)}
+          {Title(location.pathname)}
         </div>
       </div>
       <UserMenus/>
-      <hr />
     </div>
   )
 }

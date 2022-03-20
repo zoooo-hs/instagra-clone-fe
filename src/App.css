@@ -1,7 +1,22 @@
-html, body {margin: 0; padding: 0;}
+html, body {margin: 0; padding: 0; height: 100%;}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media ( max-width: 767.98px ) {
+  body {
+    min-width: 200px;
+  }
+}
+@media ( min-width: 768px ) {
+  body {
+    min-width: 800px;
+  }
+}
 
 .window-background {
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   padding: 20px;
 }
 
@@ -59,3 +74,43 @@ html, body {margin: 0; padding: 0;}
    height: 100%;
    object-fit: cover;
  }
+
+
+
+ /* auth component */
+
+ .sign-in-form {
+   margin: auto;
+ }
+
+.auth-input {
+  max-width: 200px;
+}
+
+
+/* post form */
+.post-form {
+  margin: auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+.post-form img:hover >{
+
+}
+
+.post-input {
+  max-width: 500px;
+}
+.post-input > textarea  {
+  resize: none;
+  height: 100px;
+}
+
+.post-input > button {
+  width: fit-content;
+}
+
+#post-form-input-files {
+  display: none;
+}

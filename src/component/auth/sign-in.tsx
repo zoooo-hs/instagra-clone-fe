@@ -40,19 +40,22 @@ export default function SignIn() {
       return <Navigate to={from}/>
     } else {
       return (
-        <div className="sing-in-form">
-          <h2>{strings.signIn}</h2>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">{strings.email}</label>
-            <input type="email" name="email" value={values.email} onChange={handleChange} required/>
-
-            <label htmlFor="password">{strings.password}</label>
-            <input type="password" name="password" value={values.password} onChange={handleChange} required/>
-
-            <button type="submit">{strings.submit}</button>
-            <button onClick={() => navigate(signUp.path, {state: {path: from}, replace:true})}>{strings.signUp}</button>
-          </form>
-        </div>
+        <article role="tabpanel" id="ic-tab-sign-in">
+          <div className="sign-in-form">
+            <form onSubmit={handleSubmit}>
+              <div className="field-row-stacked auth-input">
+                <label htmlFor="email">{strings.email}</label>
+                <input type="email" name="email" value={values.email} onChange={handleChange} required/>
+                <label htmlFor="password">{strings.password}</label>
+                <input type="password" name="password" value={values.password} onChange={handleChange} required/>
+              </div>
+              <section className="field-row">
+                <button type="submit">{strings.submit}</button>
+                <button onClick={() => navigate(signUp.path, {state: {path: from}, replace:true})}>{strings.signUp}</button>
+              </section>
+            </form>
+          </div>
+        </article>
       )
     }
 }

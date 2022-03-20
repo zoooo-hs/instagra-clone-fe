@@ -17,9 +17,14 @@ export default function PostForm() {
     const navigate = useNavigate();
 
     const strings = {
-      "photos": "사진",
+      "photos": "사진 추가",
       "description": "설명",
       "submit": "제출",
+    }
+
+    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const {name, value} = event.target;
+      setValues({...values, [name]: value});
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,15 +64,19 @@ export default function PostForm() {
     }
 
     return(
-      <div className="post-form">
-        <PhotoList photos={values.previewPhotos} handleClick={deleteFile}/>
-        <form onSubmit={handleSubmit}>
-          <input type="file" name="files" multiple={true} onChange={handleChange}/>
-          <label htmlFor="files">{strings.photos}</label>
-          <input type="text" name="description" onChange={handleChange} required/>
-          <label htmlFor="description">{strings.description}</label>
-          <button type="submit" disabled={disableSubmit()}>{strings.submit}</button>
-        </form>
-      </div>
+      <article role="tabpanel" id="ic-tab-post-form">
+        <div className="post-form">
+          <PhotoList photos={values.previewPhotos} handleClick={deleteFile}/>
+          <form onSubmit={handleSubmit}>
+            <div className="field-row-stacked post-input">
+              <input id="post-form-input-files" type="file" name="files" multiple={true} onChange={handleChange}/>
+              <input type="button" onClick={() => {document.getElementById('post-form-input-files')?.click()}} value={strings.photos}/>
+              <label htmlFor="description">{strings.description}</label>
+              <textarea name="description" onChange={handleTextAreaChange} required/>
+              <button type="submit" disabled={disableSubmit()}>{strings.submit}</button>
+            </div>
+          </form>
+        </div>
+      </article>
     )
 }
