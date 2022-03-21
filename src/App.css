@@ -75,7 +75,9 @@ html, body {margin: 0; padding: 0; height: 100%;}
    object-fit: cover;
  }
 
-
+ .post-photo > img:hover {
+   object-fit: contain;
+ }
 
  /* auth component */
 
