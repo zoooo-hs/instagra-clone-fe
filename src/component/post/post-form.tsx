@@ -56,7 +56,15 @@ export default function PostForm() {
       if (values.files === null) {
         return;
       }
-      PostAPI.post({...values, files: values.files}).then(() => navigate("/"));
+      const {description, files} = values;
+      const data = {
+        description,
+        files
+      }
+      setValues({files: [], previewPhotos: [], description: ""});
+      PostAPI.post(data).then(() => {
+        navigate("/")
+      });
     }
     
     const disableSubmit = () => {
