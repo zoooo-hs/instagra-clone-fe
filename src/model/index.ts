@@ -7,6 +7,7 @@ export interface Post {
     like_count: number;
     liked: boolean;
     liked_id: number;
+    created_at: Date;
 }
 
 export interface Photo {
@@ -35,4 +36,5 @@ export interface Comment {
     liked: boolean,
     comment_count: number,
     liked_id: number,
+    created_at: Date,
 }

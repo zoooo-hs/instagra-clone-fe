@@ -2,6 +2,12 @@ html, body {margin: 0; padding: 0; height: 100%;}
 
 * {
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: auto;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: auto
 }
 
 @media ( max-width: 767.98px ) {
@@ -16,7 +22,6 @@ html, body {margin: 0; padding: 0; height: 100%;}
 }
 
 .window-background {
-  /* background-color: aquamarine; */
   padding: 20px;
 }
 
@@ -41,11 +46,45 @@ html, body {margin: 0; padding: 0; height: 100%;}
   vertical-align: middle;
  }
 
- .comment-card>* {
-  display: inline-block;
-  vertical-align: middle;
-  padding-right: 5px;
+ .load-more-page {
+   text-align: center;
  }
+
+ .created_at {
+   font-size: 9px;
+ }
+
+ .comment-card  {
+   padding: 7px;
+   display: flex;
+   flex-direction: row;
+ }
+ .comment-card > * {
+   padding-right: 5px;
+   vertical-align: middle;
+ }
+
+ .comment-card p {
+   margin: 0;
+   word-break: break-all;
+ }
+
+ .comment-content {
+   flex: 1;
+ }
+
+ .comment-content > * {
+   display: block;
+   padding-bottom: 3px;
+ }
+
+ .comment-indicators > * {
+   font-size: 10px;
+   display: inline-block;
+ }
+.comment-indicators > .created_at {
+  width: 40px;
+}
 
  .post-card {
   padding-bottom: 20px;
@@ -90,15 +129,33 @@ html, body {margin: 0; padding: 0; height: 100%;}
 }
 
 
+.post-card >.like-comment-indicators i{
+  font-size: 17px;
+  padding: 8px;
+  padding-left: 0;
+}
+
+.post-card >.like-comment-indicators > *{
+  display: inline-block;
+}
+
+.post-card > .user-brief > img {
+  padding-right: 5px;
+}
+
+.fa-solid.fa-heart{
+  color: black;
+}
+
+.like-indicator {
+  height:100%;
+}
+
 /* post form */
 .post-form {
   margin: auto;
   width: 100%;
   max-width: 500px;
-}
-
-.post-form img:hover >{
-
 }
 
 .post-input {

@@ -70,7 +70,7 @@ export default function PostForm() {
           <form onSubmit={handleSubmit}>
             <div className="field-row-stacked post-input">
               <input id="post-form-input-files" type="file" name="files" multiple={true} onChange={handleChange}/>
-              <input type="button" onClick={() => {document.getElementById('post-form-input-files')?.click()}} value={strings.photos}/>
+              <button onClick={() => {document.getElementById('post-form-input-files')?.click()}} >{strings.photos}</button>
               <label htmlFor="description">{strings.description}</label>
               <textarea name="description" onChange={handleTextAreaChange} required/>
               <button type="submit" disabled={disableSubmit()}>{strings.submit}</button>

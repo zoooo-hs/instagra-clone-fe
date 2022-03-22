@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Comment } from "../../model";
-import { CommentCard } from "./comment-card";
-import * as commentAPI from "../../api/comment";
 import { CommentType } from ".";
+import * as commentAPI from "../../api/comment";
+import { Comment } from "../../model";
 import { ResourcePage } from "../common";
+import { CommentCard } from "./comment-card";
 import { CommentForm } from "./comment-form";
 
 export function CommentList (prop: {id: number, type: CommentType}) {
@@ -13,7 +13,8 @@ export function CommentList (prop: {id: number, type: CommentType}) {
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
 
     const strings = {
-        'loadMoreComment': '댓글 더 불러오기'
+        'loadMoreComment': '댓글 더 불러오기',
+        'lastPage': '...'
     }
 
     useEffect(() => {
@@ -34,6 +35,9 @@ export function CommentList (prop: {id: number, type: CommentType}) {
     }, [isFetched]);
 
     const loadMoreComment = () => {
+        if (page.lastPage) {
+            return;
+        }
         setFetched(false);
     }
 
@@ -47,7 +51,11 @@ export function CommentList (prop: {id: number, type: CommentType}) {
         <div>
             <CommentForm id={id} type={type} callback={onPostComment}/>
             {comments.map(comment => <CommentCard key={comment.id} {...comment}/>)}
-            <button disabled={page.lastPage} onClick={loadMoreComment}>{strings.loadMoreComment}</button>
+            {page.lastPage ? 
+                <div className="load-more-page" onClick={loadMoreComment}>{strings.lastPage}</div>
+                :
+                <div className="load-more-page" onClick={loadMoreComment}>{strings.loadMoreComment}</div>
+            }
         </div>
     )
 };

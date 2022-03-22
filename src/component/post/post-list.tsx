@@ -10,7 +10,8 @@ export default function PostList() {
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
 
     const strings = {
-        "loadMorePost": "게시글 더 불러오기"
+        "loadMorePost": "게시글 더 불러오기",
+        'lastPage': '...'
     }
 
     useEffect(() => {
@@ -38,7 +39,11 @@ export default function PostList() {
     return(
         <article role="tabpanel" id="rootA">
             {posts.map((post) => <PostCard key={post.id} {...post}/>)}            
-            <button disabled={page.lastPage} onClick={loadMorePost}>{strings.loadMorePost}</button>
+            {page.lastPage ? 
+                <div className="load-more-page" onClick={loadMorePost}>{strings.lastPage}</div>
+                :
+                <div className="load-more-page" onClick={loadMorePost}>{strings.loadMorePost}</div>
+            }
         </article>
     )
 }

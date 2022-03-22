@@ -1,27 +1,66 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { PhotoList } from ".";
 import { Post } from "../../model";
-import { CommentIndicator } from "../comment";
 import { CommentList } from "../comment/comment-list";
-import { Content, UserBrief } from "../common";
-import { LikeIndicator } from "../like/like-indicator";
+import { Content, CreatedAt, RoundImage } from "../common";
+import { LikeCount, LikeIndicator } from "../like/like-indicator";
 
 
 export default function PostCard(post:Post) {
 
-    const {id, user, like_count, liked, comment_count, description, liked_id} = post;
+    const {id, user, like_count, liked: iLiked, comment_count, description, liked_id, created_at} = post;
+
+    const [liked, setLiked] = useState(iLiked);
+    const [likeId, setLikeId] = useState(liked_id);
+    const [likeCount, setLikeCount] = useState(like_count);
+
     const [openComment, setOpenComment] = useState(false);
+
+    function CommentCount (prop: {commentCount: number, onClick: MouseEventHandler}) {
+      const {commentCount, onClick} = prop;
+      if (commentCount > 0) {
+        return (
+          <div onClick={onClick}>
+            댓글 {commentCount}개 모두 보기
+          </div>
+        )
+      } else {
+        return <div></div>;
+      }
+
+    }
+
+    function likeHandler (liked: boolean, likeId?: number) {
+      setLiked(liked);
+      if (likeId !== undefined) {
+        setLikeId(likeId);
+      }
+      if (liked) {
+        setLikeCount(likeCount + 1)
+      } else {
+        setLikeCount(likeCount - 1)
+      }
+    }
+
+    function toggleComment () {
+      setOpenComment(!openComment);
+    }
+
 
     return(
       <div className="post-card">
-        <UserBrief {...user}/>
-        <PhotoList photos={post.photos}/>
-        <Content description={description}/>
-        <LikeIndicator type={"PostLike"} id={id} liked={liked} count={like_count} likedId={liked_id}/>
-        <div className="indicator-inline">
-            <button onClick={() => {setOpenComment(!openComment)}}>{openComment ? "Close" : "Open"} comment {comment_count}</button>
+        <div className="user-brief">
+            <RoundImage src={user.photo.path} size={"30px"}/>
+            <b>{user.name}</b>
+        </div>        <PhotoList photos={post.photos}/>
+        <div className="like-comment-indicators">
+          <LikeIndicator id={id} likeId={likeId} type={"PostLike"} liked={liked} callback={likeHandler}/> <i onClick={toggleComment} className="fa-regular fa-comment"></i>
         </div>
-        {openComment ? <CommentList id={id} type={"PostComment"}/> : ""}
+        <LikeCount like_count={likeCount}/>
+        <Content description={description} author={user}/>
+        <CommentCount onClick={toggleComment} commentCount={comment_count}/>
+        {openComment ?  <CommentList id={id} type={"PostComment"}/> : <div></div>}
+        <CreatedAt date={created_at}/>
       </div>
     )
 }

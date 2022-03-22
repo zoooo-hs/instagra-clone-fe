@@ -1,32 +1,44 @@
-import { useState } from "react";
 import { LikeType } from ".";
-import * as likeAPI from "../../api/like"
+import * as likeAPI from "../../api/like";
 
-// TODO: count 클릭 하면 like한 사람들 정보 나오는 component 추가
-export function LikeIndicator (prop: {type: LikeType, id: number, liked: boolean, count: number, likedId: number}) {
-    const {liked: initLiked, count, id, type, likedId: initLikedId} = prop;
-    const [liked, setLiked] = useState(initLiked);
-    const [likedId, setLikedId] = useState(initLikedId);
-    const heart = liked ? <i>💛</i> : <i>🖤</i>
+export function LikeIndicator (prop: {id: number, likeId: number, type: LikeType, liked: boolean, callback: (liked: boolean, likeId?: number)=>void}) {
+    const {id, type, likeId, liked, callback} = prop;
 
-    const likeHandle = () => {
-        if (liked) {
-            // like 취소
-            likeAPI.likeCancle(likedId).then(() => {
-                setLiked(false);
-            });
-        } else {
-            // like it
-            likeAPI.likeIt(id, type).then((id) => {
-                setLikedId(id);
-                setLiked(true);
-            });
-        }
+    function dislike() {
+      likeAPI.likeCancle(likeId).then(() => {
+        callback(false);
+    });
     }
 
-    return (
-        <div className="indicator-inline">
-           <button className="" onClick={likeHandle}>Likes <b>{count}</b> {heart}</button>
+    function like() {
+      likeAPI.likeIt(id, type).then((likeId) => {
+        callback(true, likeId);
+    });
+    }
+
+    if (liked) {
+      return (
+        <div className="like-indicator">
+            <i onClick={dislike} className="fa-solid fa-heart"></i>
         </div>
-    )
-}
+      )
+    } else {
+      return (
+        <div className="like-indicator">
+            <i onClick={like} className="fa-regular fa-heart"></i>
+        </div>
+      )
+    }
+  }
+  export function LikeCount (prop: {like_count: number}) {
+    const {like_count} = prop;
+    if (like_count > 0) {
+      return (
+        <div>
+          좋아요 {like_count}개
+        </div>
+      )
+    } else {
+      return <div></div>;
+    }
+  }
