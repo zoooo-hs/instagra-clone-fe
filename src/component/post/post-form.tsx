@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { PhotoList } from ".";
 import * as PostAPI from "../../api/post";
 import { Photo } from "../../model";
@@ -12,9 +11,8 @@ interface PostFormState {
   description: string
 }
 
-export default function PostForm() {
+export default function PostForm(prop: {onClose: ()=>void}) {
     const [values, setValues] = useState<PostFormState>({files: [], previewPhotos: [], description: ""});
-    const navigate = useNavigate();
 
     const strings = {
       "photos": "사진 추가",
@@ -63,28 +61,37 @@ export default function PostForm() {
       }
       setValues({files: [], previewPhotos: [], description: ""});
       PostAPI.post(data).then(() => {
-        navigate("/")
+        prop.onClose()
       });
     }
     
-    const disableSubmit = () => {
-      return values.description === "" || values.files.length === 0;
-    }
-
     return(
-      <article role="tabpanel" id="ic-tab-post-form">
-        <div className="post-form">
+      <div className="post-form">
+        <div className="window">
+          <div className="title-bar">
+            <div className="title-bar-text">
+              새 글 작성
+            </div>
+            <div className="title-bar-controls">
+              <button aria-label="Close" onClick={prop.onClose}></button>
+            </div>
+          </div>
+        <div className="window-body">
           <PhotoList photos={values.previewPhotos} handleClick={deleteFile}/>
           <form onSubmit={handleSubmit}>
             <div className="field-row-stacked post-input">
-              <input id="post-form-input-files" type="file" name="files" multiple={true} onChange={handleChange}/>
-              <button onClick={() => {document.getElementById('post-form-input-files')?.click()}} >{strings.photos}</button>
+              <input id="post-form-input-files" type="file" name="files" multiple={true} onChange={handleChange} required/>
+              <button onClick={(event) => {
+                event.preventDefault();
+                document.getElementById('post-form-input-files')?.click()}
+              } >{strings.photos}</button>
               <label htmlFor="description">{strings.description}</label>
               <textarea name="description" onChange={handleTextAreaChange} required/>
-              <button type="submit" disabled={disableSubmit()}>{strings.submit}</button>
+              <button type="submit" disabled={values.description === "" || values.files.length === 0}>{strings.submit}</button>
             </div>
           </form>
+          </div>
         </div>
-      </article>
+      </div>
     )
 }

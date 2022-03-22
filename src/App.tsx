@@ -5,7 +5,7 @@ import SignUp from './component/auth/sign-up';
 import PostForm from './component/post/post-form';
 import PostList from './component/post/post-list';
 import { RequireAuth } from './component/RequireAuth';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signOut } from "./api/auth";
@@ -16,6 +16,7 @@ import * as postForm from "./component/post/post-form";
 
 function App() {
   const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
+  const [openForm, setOpenForm] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,19 +44,36 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  const openPostForm = () => {
+      setOpenForm(!openForm);
+  }
+  const onPostFormClose = () => {
+      setOpenForm(false);
+      window.location.reload();
+  }
 
-  }, [isAthenticated, user, dispatch])
+  useEffect(() => {
+    console.log("render");
+  }, [isAthenticated, user, dispatch, openForm])
+
+  const TitleBarControl = () => {
+    if (isAthenticated) {
+      return (
+          <div className="title-bar-controls">
+            <button onClick={openPostForm}><i className="fa-solid fa-plus"></i></button>
+            <button aria-label="Close" onClick={() => {signOut(dispatch)}}></button>
+          </div>
+      )
+    }
+    else {
+      return null;
+    }
+  }
 
   const Menus = () => {
     if (isAthenticated) {
       return (
-        <menu role="tablist">
-          <button role="tab" aria-selected={location.pathname==="/"} aria-controls="ic-tab-feeds" onClick={() => {navigate("/")}}>{strings.feeds}</button>
-          <button role="tab" aria-selected={location.pathname===postForm.path} aria-controls="ic-tab-post-form" onClick={() => {navigate(postForm.path)}}>{strings.postForm}</button>
-          <button role="tab" aria-selected={location.pathname.startsWith("/user/")} aria-controls="ic-tab-user-info" onClick={() => {navigate("/user/"+user.id)}}>{strings.profile}</button>
-          <button role="tab" onClick={() => {signOut(dispatch)}}>{strings.signOut}</button>
-        </menu>
+        null
       )
     } else {
       return (
@@ -75,16 +93,19 @@ function App() {
           <div className="title-bar-text" onClick={() => {navigate("/")}}>
             {Title(location.pathname)}
           </div>
+          <TitleBarControl />
         </div>
         <div className='window-body'>
+          {openForm ? 
+              <PostForm onClose={onPostFormClose}/>
+              :
+              null
+          }
           <section className="tabs">
             <Menus/>
             <Routes>
               <Route path={signIn.path} element={<SignIn/>} />
               <Route path="sign-up" element={<SignUp/>} />
-              <Route path="/post-form" element={
-                <RequireAuth component={<PostForm />}/>
-              } />
               <Route path="/" element={
                 <RequireAuth component={<PostList />}/>
               } />
