@@ -39,6 +39,6 @@ export function LikeIndicator (prop: {id: number, likeId: number, type: LikeType
         </div>
       )
     } else {
-      return <div></div>;
+      return null;
     }
   }

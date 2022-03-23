@@ -50,7 +50,7 @@ export function CommentList (prop: {id: number, type: CommentType}) {
     return(
         <div>
             <CommentForm id={id} type={type} callback={onPostComment}/>
-            {comments.map(comment => <CommentCard key={comment.id} {...comment}/>)}
+            {comments.map(comment => <CommentCard callback={onPostComment} key={comment.id} comment={comment}/>)}
             {page.lastPage ? 
                 <div className="load-more-page" onClick={loadMoreComment}>{strings.lastPage}</div>
                 :

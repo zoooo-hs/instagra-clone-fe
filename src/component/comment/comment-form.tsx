@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CommentType } from ".";
 import * as commentAPI from "../../api/comment";
+import { Comment } from "../../model";
 
-export function CommentForm(prop: {id: number, type: CommentType, callback: () => void}) {
-    const {id, type, callback} = prop;
-    const [values, setValues] = useState({content: ""})
+export function CommentForm(prop: {id: number, type: CommentType, callback: (comment?: Comment) => void, editOption?: {commentId: number, originContent: string}}) {
+    const {id, type, callback, editOption} = prop;
+    const [values, setValues] = useState({content: editOption? editOption.originContent : ""});
 
     const strings = {
         "title": "댓글 작성",
         "content": "내용",
-        "submit": "댓글 작성"
+        "submit": editOption? "댓글 수정": "댓글 작성"
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +20,22 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: () =
 
     const handleSubmit = async (event: React.FormEvent) => {
       event.preventDefault();
-      commentAPI.post(id, values.content, type).then(() => {
+
+      if (editOption === undefined) {
+        return commentAPI.post(id, values.content, type).then(() => {
+          setValues({content: ""});
+          callback();
+        });
+      }
+
+      if (editOption.originContent === values.content) {
+        callback(undefined);
+        return;
+      }
+      commentAPI.patch(editOption.commentId, values.content).then(patchedComment => {
         setValues({content: ""})
-        callback()
-      })
+        callback(patchedComment);
+      });
     }
 
 
@@ -30,7 +43,7 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: () =
         <div>
             <form onSubmit={handleSubmit}>
               <div className="field-row">
-                <input type="text" name="content" value={values.content} onChange={handleChange} required/>
+                <input type="text" name="content" value={values.content} onChange={handleChange} required autoFocus/>
                 <button type="submit">{strings.submit}</button>
               </div>
             </form>

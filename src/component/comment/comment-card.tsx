@@ -1,38 +1,75 @@
 import { useState } from "react";
 import { Comment } from "../../model";
+import { store } from "../../reducer";
 import { Content, CreatedAt, RoundImage } from "../common";
 import { LikeCount, LikeIndicator } from "../like/like-indicator";
+import * as commentAPI from "../../api/comment";
+import { CommentForm } from "./comment-form";
 
-export const CommentCard = (comment: Comment) => {
-    const {content, user, like_count, liked: iLiked, id,
+export const CommentCard = (prop:{comment: Comment, callback: ()=>void}) => {
+    const {content: initContent, user: author, like_count, liked: iLiked, id,
         //  comment_count, 
         liked_id,
         created_at
-    } = comment;
+    } = prop.comment;
+    const {callback} = prop;
+
+    const user = store.getState().auth.user;
 
     const [liked, setLiked] = useState(iLiked);
     const [likeId, setLikeId] = useState(liked_id);
     const [likeCount, setLikeCount] = useState(like_count);
 
+    const [openEdit, setOpenEdit] = useState(false);
+    const [content, setContent] = useState(initContent);
+
     function likeHandler (liked: boolean, likeId?: number) {
-        setLiked(liked);
-        if (likeId !== undefined) {
-          setLikeId(likeId);
-        }
-        if (liked) {
-          setLikeCount(likeCount + 1)
-        } else {
-          setLikeCount(likeCount - 1)
-        }
+      setLiked(liked);
+      if (likeId !== undefined) {
+        setLikeId(likeId);
       }
+      if (liked) {
+        setLikeCount(likeCount + 1)
+      } else {
+        setLikeCount(likeCount - 1)
+      }
+    }
+    
+    function editComment (comment?: Comment) {
+      if (comment) {
+        setContent(comment.content);
+      }
+      // TODO: (수정됨) 정보 제공  고민
+      setOpenEdit(false);
+    }
+
+    function deleteComment () {
+      // TODO: delete comfirm modal component
+      commentAPI.deleteById(id).then(() => {
+        callback();
+      });
+    }
+
     return (
         <div className="comment-card">
-            <RoundImage src={user.photo.path} size={"25px"}/>
+            <RoundImage src={author.photo.path} size={"25px"}/>
             <div className="comment-content">
-              <Content description={content} author={user}/>
+              {openEdit ?  
+                <CommentForm id={id} type={"PostComment"} callback={editComment} editOption={{commentId: id, originContent: content}}/>
+              :
+                <Content description={content} author={author}/>
+              }
               <div className="comment-indicators">
                   <CreatedAt date={created_at}/>
                   <LikeCount like_count={likeCount}/> 
+                  {user.id === author.id ? 
+                  <div className="edit-delete-buttons">
+                    <i className="fa-solid fa-pen" onClick={() => {setOpenEdit(!openEdit)}}></i>
+                    <i className="fa-solid fa-trash-can" onClick={deleteComment}></i>
+                  </div>
+                  :
+                  null
+                  }
               </div>
             </div>
             <LikeIndicator type="CommentLike" liked={liked} id={id} likeId={likeId} callback={likeHandler}/>

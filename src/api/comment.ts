@@ -50,3 +50,13 @@ export const post = (id: number, content: string, type: CommentType): Promise<Co
             return Promise.reject();
     }
 }
+
+export const deleteById = (id: number):Promise<void> => {
+    return axios.delete(`/comment/${id}`);
+}
+
+export const patch = (id: number, content: string):Promise<Comment> => {
+    return axios.patch(`/comment/${id}`, {
+        content
+    }).then(result => result.data);
+}

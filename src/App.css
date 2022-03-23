@@ -85,6 +85,15 @@ button {
 .comment-indicators > .created_at {
   width: 40px;
 }
+.comment-indicators > * {
+  width: 70px;
+}
+
+.edit-delete-buttons > i {
+  width: 30px;
+}
+
+
 
  .post-card {
   padding-bottom: 20px;
