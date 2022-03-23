@@ -10,7 +10,8 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: (com
     const strings = {
         "title": "댓글 작성",
         "content": "내용",
-        "submit": editOption? "댓글 수정": "댓글 작성"
+        "submit": editOption? "댓글 수정": "댓글 작성",
+        "cancle": "수정 취소"
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +30,17 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: (com
       }
 
       if (editOption.originContent === values.content) {
-        callback(undefined);
+        cancleEdit();
         return;
       }
       commentAPI.patch(editOption.commentId, values.content).then(patchedComment => {
         setValues({content: ""})
         callback(patchedComment);
       });
+    }
+
+    const cancleEdit = () => {
+        callback(undefined);
     }
 
 
@@ -45,6 +50,10 @@ export function CommentForm(prop: {id: number, type: CommentType, callback: (com
               <div className="field-row">
                 <input type="text" name="content" value={values.content} onChange={handleChange} required autoFocus/>
                 <button type="submit">{strings.submit}</button>
+                {editOption?
+                <button onClick={cancleEdit}>{strings.cancle}</button>
+                : null
+                }
               </div>
             </form>
         </div>
