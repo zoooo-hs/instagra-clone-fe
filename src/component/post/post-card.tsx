@@ -52,7 +52,8 @@ export default function PostCard(post:Post) {
         <div className="user-brief">
             <RoundImage src={user.photo.path} size={"30px"}/>
             <b>{user.name}</b>
-        </div>        <PhotoList photos={post.photos}/>
+        </div>        
+        <PhotoList photos={post.photos}/>
         <div className="like-comment-indicators">
           <LikeIndicator id={id} likeId={likeId} type={"PostLike"} liked={liked} callback={likeHandler}/> <i onClick={toggleComment} className="fa-regular fa-comment"></i>
         </div>

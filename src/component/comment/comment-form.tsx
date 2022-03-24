@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CommentType } from ".";
 import * as commentAPI from "../../api/comment";
 import { Comment } from "../../model";
