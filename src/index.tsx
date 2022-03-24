@@ -4,10 +4,26 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { BrowserRouter } from "react-router-dom";
+import { store } from './reducer'
+import { Provider } from 'react-redux';
+import axios from 'axios';
+
+const developmentBackendURL = () => {
+  const {protocol, hostname} = window.location;
+  return `${protocol}//${hostname}:8080`;
+}
+
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? developmentBackendURL() : process.env.API_URL;
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 
