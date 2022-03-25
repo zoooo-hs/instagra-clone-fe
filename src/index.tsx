@@ -14,7 +14,7 @@ const developmentBackendURL = () => {
   return `${protocol}//${hostname}:8080`;
 }
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? developmentBackendURL() : process.env.API_URL;
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? developmentBackendURL() : process.env.REACT_APP_API_URL;
 
 ReactDOM.render(
   <Provider store={store}>
