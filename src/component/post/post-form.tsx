@@ -1,5 +1,6 @@
 import heic2any from "heic2any";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PhotoList } from ".";
 import * as PostAPI from "../../api/post";
 import { Photo } from "../../model";
@@ -16,6 +17,8 @@ export default function PostForm(prop: {onClose: ()=>void}) {
     const [values, setValues] = useState<PostFormState>({files: [], previewPhotos: [], description: ""});
 
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const strings = {
       "photos": "사진 추가",
@@ -77,6 +80,7 @@ export default function PostForm(prop: {onClose: ()=>void}) {
       }
       setValues({files: [], previewPhotos: [], description: ""});
       PostAPI.post(data).then(() => {
+        navigate("/");
         prop.onClose()
       });
     }

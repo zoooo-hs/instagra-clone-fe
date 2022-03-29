@@ -198,3 +198,8 @@ button {
 #post-form-input-files {
   display: none;
 }
+
+/* search tsx */
+.search-result-list > div{
+  padding-top: 10px;
+}

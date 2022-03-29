@@ -13,6 +13,7 @@ import { RootState } from "./reducer";
 import { AuthState } from "./reducer/auth";
 import * as signUp from "./component/auth/sign-up";
 import * as postForm from "./component/post/post-form";
+import { Search } from './component/search/search';
 
 function App() {
   const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
@@ -60,6 +61,7 @@ function App() {
     if (isAthenticated) {
       return (
           <div className="title-bar-controls">
+            <button onClick={() => {navigate("/search")}}><i className="fa-solid fa-search"></i></button>
             <button onClick={openPostForm}><i className="fa-solid fa-plus"></i></button>
             <button aria-label="Close" onClick={() => {signOut(dispatch)}}></button>
           </div>
@@ -106,6 +108,9 @@ function App() {
             <Routes>
               <Route path={signIn.path} element={<SignIn/>} />
               <Route path="sign-up" element={<SignUp/>} />
+              <Route path="/search" element={
+                <RequireAuth component={<Search />}/>
+              } />
               <Route path="/" element={
                 <RequireAuth component={<PostList />}/>
               } />

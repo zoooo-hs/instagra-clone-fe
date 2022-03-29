@@ -38,3 +38,8 @@ export interface Comment {
     liked_id: number,
     created_at: Date,
 }
+
+export interface HashTag {
+    tag: string,
+    count: number
+}
