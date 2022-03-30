@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import * as postAPI from "../../api/post";
 import { Post } from "../../model";
 import { ResourcePage } from "../common";
 import PostCard from "./post-card";
 
-export default function PostList() {
+export default function PostList({type}: {type: postAPI.PostListType}) {
+    const params = useParams();
+    const keyword = params.keyword || "";
     const [isFetched, setFetched] = useState(false);
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
@@ -16,7 +19,7 @@ export default function PostList() {
 
     useEffect(() => {
         if (isFetched === false) {
-            postAPI.fetch(page.index).then(result => {
+            postAPI.fetch(type, keyword, page.index).then(result => {
                 if (result.length === 0) {
                     setPage({...page, lastPage: true});
                 } else {

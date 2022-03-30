@@ -1,22 +1,22 @@
 import { useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import * as SearchAPI from "../../api/search";
 import { HashTag, User } from "../../model";
 import { RoundImage } from "../common";
 
 
-function UserResultEntity(prop: {user: User}) {
-    const {user} = prop;
+function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
     return (
-        <div className="user-brief">
+        <div className="user-brief" onClick={() => {navigate(`/user/${user.id}/post`)}}>
             <RoundImage src={user.photo.path} size={"30px"}/>
             <b>{user.name}</b>
         </div>  
     )
 }
-function HashTagResultEntity(prop: {tag: string, count: number}) {
-    const {tag, count} = prop;
+function HashTagResultEntity({tag, count, navigate}: {tag: string, count: number, navigate: NavigateFunction}) {
+    const tagWithoutHash = tag.substring(1);
     return (
-        <div>
+        <div onClick={() => {navigate(`/hash-tag/${tagWithoutHash}/post`)}}>
             <b>{tag}</b> <i>{count}</i>
         </div>
     )
@@ -32,6 +32,9 @@ export function Search() {
 
     const [hashTagResults, setHashTagResults] = useState<HashTag[]>([]);
     const [userResults, setUserResults] = useState<User[]>([]);
+
+
+    const navigate = useNavigate();
 
     const setter = {
         HASH_TAG: setHashTagResults,
@@ -73,9 +76,9 @@ export function Search() {
             <section className="field-row-stack search-result-list">
             {
                 values.searchKey === "HASH_TAG" ?
-                    hashTagResults.map((hashTagResult, index) => <HashTagResultEntity key={index} tag={hashTagResult.tag} count={hashTagResult.count}/>)
+                    hashTagResults.map((hashTagResult, index) => <HashTagResultEntity key={index} tag={hashTagResult.tag} count={hashTagResult.count} navigate={navigate}/>)
                     :
-                    userResults.map((userResult, index) => <UserResultEntity key={index} user={userResult}/>)
+                    userResults.map((userResult, index) => <UserResultEntity key={index} user={userResult} navigate={navigate}/>)
             }
             </section>
         </div>

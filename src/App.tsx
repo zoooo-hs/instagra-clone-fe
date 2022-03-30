@@ -111,8 +111,14 @@ function App() {
               <Route path="/search" element={
                 <RequireAuth component={<Search />}/>
               } />
+              <Route path="/hash-tag/:keyword/post" element={
+                <RequireAuth component={<PostList type='HASH_TAG'/>}/>
+              } />
+              <Route path="/user/:keyword/post" element={
+                <RequireAuth component={<PostList type='USER'/>}/>
+              } />
               <Route path="/" element={
-                <RequireAuth component={<PostList />}/>
+                <RequireAuth component={<PostList type='ALL'/>}/>
               } />
             </Routes>
           </section>
