@@ -10,7 +10,6 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     const params = useParams();
     const keyword = params.keyword || "";
     const [title, setTitle] = useState("");
-    const [isFetched, setFetched] = useState(false);
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
 
@@ -32,39 +31,42 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     }
 
     useEffect(() => {
-        if (isFetched === false) {
-            postAPI.fetch(type, keyword, page.index).then(result => {
-                if (result.length === 0) {
-                    setPage({...page, lastPage: true});
-                } else {
-                    setPage({...page, index: page.index + 1});
-                    setPosts(posts.concat(result));
-                }
-                switch (type) {
-                    case "USER":
-                        // TODO: user 정보를 땨로 받아오는 방법 찾아보기 아니면 user name으로 게시글 리스트 조회하기
-                        userAPI.info(parseInt(keyword)).then(user => {
-                            setTitle(`@${user.name}`);
-                        });
-                        break
-                    case "HASH_TAG":
-                        setTitle(`#${keyword}`);
-                        break
-                    default:
-                        setTitle("");
-                        break
-                }
-                setFetched(true);
-            });
-        } else {
-            return;
+        postAPI.fetch(type, keyword, 0).then(result => {
+            setPage({index: 0, lastPage: false});
+            setPosts(result);
+        });
+
+        switch (type) {
+            case "USER":
+                // TODO: user 정보를 땨로 받아오는 방법 찾아보기 아니면 user name으로 게시글 리스트 조회하기
+                userAPI.info(parseInt(keyword)).then(user => {
+                    setTitle(`@${user.name}`);
+                });
+                break
+            case "HASH_TAG":
+                setTitle(`#${keyword}`);
+                break
+            default:
+                setTitle("");
+                break
         }
+    }, [type, keyword])
+
+    useEffect(() => {
+        if (page.index === 0) return;
+        postAPI.fetch(type, keyword, page.index).then(result => {
+            if (result.length === 0) {
+                setPage({...page, lastPage: true});
+            } else {
+                setPosts(posts.concat(result));
+            }
+        });
     // fetch 유무로만 useEffect
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFetched]);
+    }, [page.index]);
 
     const loadMorePost = () => {
-        setFetched(false);
+        setPage({...page, index: page.index+1})
     }
 
     return(
