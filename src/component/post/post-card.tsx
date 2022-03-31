@@ -1,4 +1,5 @@
 import { MouseEventHandler, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import { PhotoList } from ".";
 import { Post } from "../../model";
 import { CommentList } from "../comment/comment-list";
@@ -13,8 +14,9 @@ export default function PostCard(post:Post) {
     const [liked, setLiked] = useState(iLiked);
     const [likeId, setLikeId] = useState(liked_id);
     const [likeCount, setLikeCount] = useState(like_count);
-
     const [openComment, setOpenComment] = useState(false);
+
+    const navigate = useNavigate();
 
     function CommentCount (prop: {commentCount: number, onClick: MouseEventHandler}) {
       const {commentCount, onClick} = prop;
@@ -49,7 +51,7 @@ export default function PostCard(post:Post) {
 
     return(
       <div className="post-card">
-        <div className="user-brief">
+        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user/post`)}}>
             <RoundImage src={user.photo.path} size={"30px"}/>
             <b>{user.name}</b>
         </div>        

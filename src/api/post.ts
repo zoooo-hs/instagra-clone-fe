@@ -6,10 +6,10 @@ export type PostListType = "ALL" | "USER" | "HASH_TAG";
 
 const encodedHashTag = encodeURI("#");
 
-export const fetch = (type: PostListType, keyword: string, index: number): Promise<Post[]> => {
+export const fetch = async (type: PostListType, keyword: string, index: number): Promise<Post[]> => {
     switch (type) {
         case "USER":
-            return axios.get(`/user/${keyword}/post`,
+            return axios.get(`/name/${keyword}/user/post`,
                 {
                     params: {
                         index,

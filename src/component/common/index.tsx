@@ -1,19 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import { User } from "../../model";
 
 export function HashTag(prop:{hashtag: string}) {
+    const navigate = useNavigate()
     const {hashtag} = prop;
     if (hashtag[0] !== "#") {
         return <span>{hashtag}</span>
     }
-    return <span className="hashtag"><a className="bold-href" href={"/hash-tag/"+prop.hashtag.substring(1)}>{prop.hashtag}</a></span>
+    return <span className="hashtag bold-href" onClick={() => {navigate(`/hash-tag/${prop.hashtag.substring(1)}/post`)}}>{prop.hashtag}</span>
 }
 
+// TODO: user 정보 페이지 만들어지면 변경하기
 export function Mention(prop:{mention: string}) {
+    const navigate = useNavigate()
     const {mention} = prop;
     if (mention[0] !== "@") {
         return <span>{mention}</span>
     }
-    return <span className="mention"><a className="bold-href" href={"/user/"+mention.substring(1)}>{mention}</a></span>
+    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user/post`)}}>{mention}</span>
 }
 
 export function Content(prop: {description: string, author: User}) {

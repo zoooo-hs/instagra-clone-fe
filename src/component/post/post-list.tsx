@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as postAPI from "../../api/post";
-import * as userAPI from "../../api/user";
 import { Post } from "../../model";
 import { ResourcePage } from "../common";
 import PostCard from "./post-card";
@@ -38,10 +37,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
 
         switch (type) {
             case "USER":
-                // TODO: user 정보를 땨로 받아오는 방법 찾아보기 아니면 user name으로 게시글 리스트 조회하기
-                userAPI.info(parseInt(keyword)).then(user => {
-                    setTitle(`@${user.name}`);
-                });
+                setTitle(`@${keyword}`);
                 break
             case "HASH_TAG":
                 setTitle(`#${keyword}`);

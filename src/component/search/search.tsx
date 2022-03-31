@@ -7,7 +7,7 @@ import { RoundImage } from "../common";
 
 function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
     return (
-        <div className="user-brief" onClick={() => {navigate(`/user/${user.id}/post`)}}>
+        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user/post`)}}>
             <RoundImage src={user.photo.path} size={"30px"}/>
             <b>{user.name}</b>
         </div>  

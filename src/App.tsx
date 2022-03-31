@@ -114,7 +114,7 @@ function App() {
               <Route path="/hash-tag/:keyword/post" element={
                 <RequireAuth component={<PostList type='HASH_TAG'/>}/>
               } />
-              <Route path="/user/:keyword/post" element={
+              <Route path="/name/:keyword/user/post" element={
                 <RequireAuth component={<PostList type='USER'/>}/>
               } />
               <Route path="/" element={
