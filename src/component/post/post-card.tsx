@@ -51,7 +51,7 @@ export default function PostCard(post:Post) {
 
     return(
       <div className="post-card">
-        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user/post`)}}>
+        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
             <RoundImage src={user.photo.path} size={"30px"}/>
             <b>{user.name}</b>
         </div>        

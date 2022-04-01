@@ -14,6 +14,7 @@ import { AuthState } from "./reducer/auth";
 import * as signUp from "./component/auth/sign-up";
 import * as postForm from "./component/post/post-form";
 import { Search } from './component/search/search';
+import UserInfo from './component/user/user-info';
 
 function App() {
   const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
@@ -103,7 +104,6 @@ function App() {
               :
               null
           }
-          <section className="tabs">
             <Menus/>
             <Routes>
               <Route path={signIn.path} element={<SignIn/>} />
@@ -117,11 +117,13 @@ function App() {
               <Route path="/name/:keyword/user/post" element={
                 <RequireAuth component={<PostList type='USER'/>}/>
               } />
+              <Route path="/name/:name/user" element={
+                <RequireAuth component={<UserInfo />}/>
+              } />
               <Route path="/" element={
                 <RequireAuth component={<PostList type='ALL'/>}/>
               } />
             </Routes>
-          </section>
         </div>
       </div>
     </div>

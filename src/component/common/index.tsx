@@ -17,7 +17,7 @@ export function Mention(prop:{mention: string}) {
     if (mention[0] !== "@") {
         return <span>{mention}</span>
     }
-    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user/post`)}}>{mention}</span>
+    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user`)}}>{mention}</span>
 }
 
 export function Content(prop: {description: string, author: User}) {

@@ -30,7 +30,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     }
 
     useEffect(() => {
-        postAPI.fetch(type, keyword, 0).then(result => {
+        postAPI.fetch(type, keyword, 0, 4).then(result => {
             setPage({index: 0, lastPage: false});
             setPosts(result);
         });
@@ -50,7 +50,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
 
     useEffect(() => {
         if (page.index === 0) return;
-        postAPI.fetch(type, keyword, page.index).then(result => {
+        postAPI.fetch(type, keyword, page.index, 4).then(result => {
             if (result.length === 0) {
                 setPage({...page, lastPage: true});
             } else {
