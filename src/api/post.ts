@@ -30,7 +30,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
                         keyword,
                         searchKey: "HASH_TAG",
                         index,
-                        size: 4
+                        size
                     }
                 }).then((result) => Promise.resolve(result.data))
                 .catch((e: AxiosError) => {
@@ -45,7 +45,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
                 {
                     params: {
                         index,
-                        size: 4
+                        size
                     }
                 }).then((result) => Promise.resolve(result.data))
                 .catch((e: AxiosError) => {

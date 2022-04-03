@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import * as postAPI from "../../api/post";
 import { Post } from "../../model";
 import { ResourcePage } from "../common";
 import PostCard from "./post-card";
+import queryString from "query-string";
+import {POST_PAGE_SIZE} from ".";
 
 export default function PostList({type}: {type: postAPI.PostListType}) {
     const params = useParams();
+    const location = useLocation();
+    let {cursor, initPage} = queryString.parse(location.search, {parseNumbers: true});
+    initPage = initPage !== null && typeof initPage === "number"  ? initPage : 0;
+
     const keyword = params.keyword || "";
     const [title, setTitle] = useState("");
     const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
+    const [page, setPage] = useState<ResourcePage>({index: initPage, lastPage: false});
 
+
+    
     const strings = {
         "loadMorePost": "게시글 더 불러오기",
         'lastPage': '...'
@@ -30,8 +38,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     }
 
     useEffect(() => {
-        postAPI.fetch(type, keyword, 0, 4).then(result => {
-            setPage({index: 0, lastPage: false});
+        postAPI.fetch(type, keyword, 0, (page.index+1)*POST_PAGE_SIZE).then(result => {
             setPosts(result);
         });
 
@@ -49,8 +56,18 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     }, [type, keyword])
 
     useEffect(() => {
+        if (document.getElementsByClassName('post-card').length === 0) {
+            return;
+        }
+        if (cursor === null || typeof cursor !== "number" || document.getElementsByClassName('post-card').length < cursor) {
+            cursor = 0;
+        }
+        document.getElementsByClassName('post-card')[cursor].scrollIntoView()
+    }, [posts, cursor])
+
+    useEffect(() => {
         if (page.index === 0) return;
-        postAPI.fetch(type, keyword, page.index, 4).then(result => {
+        postAPI.fetch(type, keyword, page.index, POST_PAGE_SIZE).then(result => {
             if (result.length === 0) {
                 setPage({...page, lastPage: true});
             } else {

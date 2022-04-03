@@ -1,4 +1,6 @@
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {POST_PAGE_SIZE} from ".";
 import * as postAPI from "../../api/post";
 import {Post} from "../../model";
 import {ResourcePage, SquareImage} from "../common";
@@ -15,13 +17,15 @@ export default function PostGrid({name}: {name: string}) {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
 
+    const navigate = useNavigate();
+
     const strings = {
         "loadMorePost": "게시글 더 불러오기",
         'lastPage': '...'
     }
 
     useEffect(() => {
-        postAPI.fetch("USER", name, 0, 9).then(result => {
+        postAPI.fetch("USER", name, 0, POST_PAGE_SIZE).then(result => {
             setPage({index: 0, lastPage: false});
             setPosts(result);
         });
@@ -30,7 +34,7 @@ export default function PostGrid({name}: {name: string}) {
 
     useEffect(() => {
         if (page.index === 0) return;
-        postAPI.fetch("USER", name, page.index, 9).then(result => {
+        postAPI.fetch("USER", name, page.index, POST_PAGE_SIZE).then(result => {
             if (result.length === 0) {
                 setPage({...page, lastPage: true});
             } else {
@@ -47,7 +51,7 @@ export default function PostGrid({name}: {name: string}) {
     return(
         <div>
             <div className="post-grid">
-                {posts.map((post) => <PostGridElement key={post.id} post={post}/>)}            
+                {posts.map((post, index) => <div onClick={() => {navigate(`/name/${name}/user/post?cursor=${index}&initPage=${page.index}`)}}><PostGridElement key={index} post={post}/></div>)}            
             </div>
             {page.lastPage ? 
                 <div className="load-more-page" onClick={loadMorePost}>{strings.lastPage}</div>

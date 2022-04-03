@@ -2,6 +2,8 @@ import { TailSpin } from "react-loader-spinner";
 import { Photo } from "../../model";
 import { SquareImage } from "../common";
 
+export const POST_PAGE_SIZE = 8
+
 export function PhotoList(prop: {photos: Photo[], handleClick?: (index: number)=>void, loading?: boolean}) {
     const { photos, handleClick: callback, loading } = prop;
 
