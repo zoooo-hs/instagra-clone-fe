@@ -7,10 +7,10 @@ import {ResourcePage, SquareImage} from "../common";
 
 function PostGridElement({post}: {post: Post}) {
     return (
-            <div className="post-grid-element">
-                <SquareImage src={post.photos[0].path} size="10px"/>
-            </div>
-           )
+        <div className="post-grid-element">
+            <SquareImage src={post.photos[0].path} size="10px" />
+        </div>
+    )
 }
 
 export default function PostGrid({name}: {name: string}) {
@@ -29,7 +29,7 @@ export default function PostGrid({name}: {name: string}) {
             setPage({index: 0, lastPage: false});
             setPosts(result);
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [name])
 
     useEffect(() => {
@@ -41,19 +41,19 @@ export default function PostGrid({name}: {name: string}) {
                 setPosts(posts.concat(result));
             }
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page.index]);
 
     const loadMorePost = () => {
-        setPage({...page, index: page.index+1})
+        setPage({...page, index: page.index + 1})
     }
 
-    return(
+    return (
         <div>
             <div className="post-grid">
-                {posts.map((post, index) => <div onClick={() => {navigate(`/name/${name}/user/post?cursor=${index}&initPage=${page.index}`)}}><PostGridElement key={index} post={post}/></div>)}            
+                {posts.map((post, index) => <div onClick={() => {navigate(`/name/${name}/user/post?cursor=${index}&initPage=${page.index}`)}}><PostGridElement key={index} post={post} /></div>)}
             </div>
-            {page.lastPage ? 
+            {page.lastPage ?
                 <div className="load-more-page" onClick={loadMorePost}>{strings.lastPage}</div>
                 :
                 <div className="load-more-page" onClick={loadMorePost}>{strings.loadMorePost}</div>

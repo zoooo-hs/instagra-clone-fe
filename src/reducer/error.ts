@@ -4,7 +4,7 @@ import {Error} from "../model";
 export interface ErrorState {
     error?: Error,
 }
-const initialState:ErrorState = { error: undefined }
+const initialState: ErrorState = {error: undefined}
 
 type ErrorAction = Action<ErrorState>;
 

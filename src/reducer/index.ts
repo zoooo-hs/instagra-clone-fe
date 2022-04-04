@@ -1,6 +1,6 @@
-import { combineReducers, createStore } from "redux";
-import { auth } from "./auth";
-import { error  } from "./error";
+import {combineReducers, createStore} from "redux";
+import {auth} from "./auth";
+import {error} from "./error";
 
 
 export interface Action<T> {

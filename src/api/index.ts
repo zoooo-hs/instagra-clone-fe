@@ -4,8 +4,8 @@ import {Error} from "../model";
 import {set} from "../reducer/error";
 
 const developmentBackendURL = () => {
-  const {protocol, hostname} = window.location;
-  return `${protocol}//${hostname}:8080`;
+    const {protocol, hostname} = window.location;
+    return `${protocol}//${hostname}:8080`;
 }
 
 

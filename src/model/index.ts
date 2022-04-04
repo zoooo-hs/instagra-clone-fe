@@ -46,7 +46,7 @@ export interface HashTag {
 
 export interface ValidationError {
     field: string,
-    rejected_value: string|number|boolean,
+    rejected_value: string | number | boolean,
     default_message: string
 }
 export interface Error {

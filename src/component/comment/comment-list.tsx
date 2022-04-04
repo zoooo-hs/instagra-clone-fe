@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { CommentType } from ".";
+import {useEffect, useState} from "react";
+import {CommentType} from ".";
 import * as commentAPI from "../../api/comment";
-import { Comment } from "../../model";
-import { ResourcePage } from "../common";
-import { CommentCard } from "./comment-card";
-import { CommentForm } from "./comment-form";
+import {Comment} from "../../model";
+import {ResourcePage} from "../common";
+import {CommentCard} from "./comment-card";
+import {CommentForm} from "./comment-form";
 
-export function CommentList (prop: {id: number, type: CommentType}) {
-    const { id, type } = prop;
+export function CommentList(prop: {id: number, type: CommentType}) {
+    const {id, type} = prop;
     const [isFetched, setFetched] = useState(false);
     const [comments, setComments] = useState<Comment[]>([]);
     const [page, setPage] = useState<ResourcePage>({index: 0, lastPage: false});
@@ -31,7 +31,7 @@ export function CommentList (prop: {id: number, type: CommentType}) {
         } else {
             return;
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isFetched]);
 
     const loadMoreComment = () => {
@@ -47,11 +47,11 @@ export function CommentList (prop: {id: number, type: CommentType}) {
         setFetched(false);
     }
 
-    return(
+    return (
         <div>
-            <CommentForm id={id} type={type} callback={onPostComment}/>
-            {comments.map(comment => <CommentCard callback={onPostComment} key={comment.id} comment={comment}/>)}
-            {page.lastPage ? 
+            <CommentForm id={id} type={type} callback={onPostComment} />
+            {comments.map(comment => <CommentCard callback={onPostComment} key={comment.id} comment={comment} />)}
+            {page.lastPage ?
                 <div className="load-more-page" onClick={loadMoreComment}>{strings.lastPage}</div>
                 :
                 <div className="load-more-page" onClick={loadMoreComment}>{strings.loadMoreComment}</div>

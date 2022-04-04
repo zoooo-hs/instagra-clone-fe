@@ -1,5 +1,5 @@
-import axios, { AxiosError } from "axios";
-import { HashTag, User } from "../model";
+import axios, {AxiosError} from "axios";
+import {HashTag, User} from "../model";
 
 export type SearchType = "NAME" | "HASH_TAG";
 
@@ -12,12 +12,12 @@ export function hashTagSearch(keyword: string, searchKey: SearchType): Promise<H
             size: 20
         }
     }).then(result => result.data)
-    .catch((e: AxiosError) => {
-        if (e.response?.status === 403) {
-            return Promise.reject("AUTH");
-        }
-        return Promise.resolve([]);
-    });
+        .catch((e: AxiosError) => {
+            if (e.response?.status === 403) {
+                return Promise.reject("AUTH");
+            }
+            return Promise.resolve([]);
+        });
 }
 
 export function userSearch(keyword: string, searchKey: SearchType): Promise<User[]> {
@@ -29,10 +29,10 @@ export function userSearch(keyword: string, searchKey: SearchType): Promise<User
             size: 20
         }
     }).then(result => result.data)
-    .catch((e: AxiosError) => {
-        if (e.response?.status === 403) {
-            return Promise.reject("AUTH");
-        }
-        return Promise.resolve([]);
-    });
+        .catch((e: AxiosError) => {
+            if (e.response?.status === 403) {
+                return Promise.reject("AUTH");
+            }
+            return Promise.resolve([]);
+        });
 }

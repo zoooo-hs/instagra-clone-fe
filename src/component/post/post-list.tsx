@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
+import {useLocation, useParams} from "react-router-dom";
 import * as postAPI from "../../api/post";
-import { Post } from "../../model";
-import { ResourcePage } from "../common";
+import {Post} from "../../model";
+import {ResourcePage} from "../common";
 import PostCard from "./post-card";
 import queryString from "query-string";
 import {POST_PAGE_SIZE} from ".";
@@ -12,7 +12,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     const location = useLocation();
     const postRef = useRef<HTMLDivElement[]>([]);
     let {cursor, initPage} = queryString.parse(location.search, {parseNumbers: true});
-    initPage = initPage !== null && typeof initPage === "number"  ? initPage : 0;
+    initPage = initPage !== null && typeof initPage === "number" ? initPage : 0;
 
     const keyword = params.keyword || "";
     const [title, setTitle] = useState("");
@@ -20,13 +20,13 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     const [page, setPage] = useState<ResourcePage>({index: initPage, lastPage: false});
 
 
-    
+
     const strings = {
         "loadMorePost": "게시글 더 불러오기",
         'lastPage': '...'
     }
 
-    function ListHeader ({type, title}: {type: postAPI.PostListType, title: string}) {
+    function ListHeader({type, title}: {type: postAPI.PostListType, title: string}) {
         switch (type) {
             case "HASH_TAG":
             case "USER":
@@ -35,11 +35,11 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
             default:
                 return null;
         }
-        return <h3 style={{"textAlign":"center"}}>{title}</h3>
+        return <h3 style={{"textAlign": "center"}}>{title}</h3>
     }
 
     useEffect(() => {
-        postAPI.fetch(type, keyword, 0, (page.index+1)*POST_PAGE_SIZE).then(result => {
+        postAPI.fetch(type, keyword, 0, (page.index + 1) * POST_PAGE_SIZE).then(result => {
             setPosts(result);
         });
 
@@ -54,7 +54,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
                 setTitle("");
                 break
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [type, keyword])
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
             target = cursor;
         }
         postRef.current[target].scrollIntoView()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [posts, cursor])
 
     useEffect(() => {
@@ -80,18 +80,18 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
                 setPosts(posts.concat(result));
             }
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page.index]);
 
     const loadMorePost = () => {
-        setPage({...page, index: page.index+1})
+        setPage({...page, index: page.index + 1})
     }
 
-    return(
+    return (
         <div>
-            <ListHeader type={type} title={title}/>
-            {posts.map((post, index) => <div ref={(el: HTMLDivElement) => (postRef.current[index] = el)} key={post.id}><PostCard {...post}/></div>)}            
-            {page.lastPage ? 
+            <ListHeader type={type} title={title} />
+            {posts.map((post, index) => <div ref={(el: HTMLDivElement) => (postRef.current[index] = el)} key={post.id}><PostCard {...post} /></div>)}
+            {page.lastPage ?
                 <div className="load-more-page" onClick={loadMorePost}>{strings.lastPage}</div>
                 :
                 <div className="load-more-page" onClick={loadMorePost}>{strings.loadMorePost}</div>

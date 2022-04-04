@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
+import axios, {AxiosError} from "axios";
 import FormData from "form-data";
-import { Post } from "../model";
+import {Post} from "../model";
 
 export type PostListType = "ALL" | "USER" | "HASH_TAG";
 
