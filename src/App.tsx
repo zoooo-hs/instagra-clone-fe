@@ -15,13 +15,17 @@ import * as signUp from "./component/auth/sign-up";
 import * as postForm from "./component/post/post-form";
 import { Search } from './component/search/search';
 import UserInfo from './component/user/user-info';
+import  * as errorState from './reducer/error';
+import {ErrorBox} from './component/common';
 
 function App() {
   const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
+  const {error}: errorState.ErrorState = useSelector((state: RootState) => state.error);
   const [openForm, setOpenForm] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
 
   const strings = {
     "title": "Instagram",
@@ -88,7 +92,6 @@ function App() {
     }
   }
 
-
   return (
     <div className="window-background">
       <div className="window">
@@ -99,6 +102,9 @@ function App() {
           <TitleBarControl />
         </div>
         <div className='window-body'>
+            {error === undefined ? null :
+              <ErrorBox error={error}/>
+            }
           {openForm ? 
               <PostForm onClose={onPostFormClose}/>
               :

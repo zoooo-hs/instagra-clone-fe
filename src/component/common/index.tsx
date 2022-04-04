@@ -1,5 +1,7 @@
+import {useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../model";
+import { Error, User } from "../../model";
+import {clear} from "../../reducer/error";
 
 export function HashTag(prop:{hashtag: string}) {
     const navigate = useNavigate()
@@ -119,3 +121,28 @@ export function CreatedAt(prop: {date: Date}) {
     const content = getTime(date);
     return <div className="created_at">{content}</div>
 }
+
+export function ErrorBox({error}: {error: Error}) {
+    const dispatch = useDispatch();
+    function close() {
+        dispatch(clear());
+    }
+    return (
+            <div className="error-box">
+              <div className="window">
+                <div className="title-bar">
+                  <div className="title-bar-text">
+                    {`ERROR_${error.code}`}
+                  </div>
+                  <div className="title-bar-controls">
+                    <button aria-label="Close" onClick={close}></button>
+                  </div>
+                </div>
+                <div className='window-body'>
+                {`오류!: ${error.message}`}
+                </div>
+              </div>
+            </div>
+           )
+}
+

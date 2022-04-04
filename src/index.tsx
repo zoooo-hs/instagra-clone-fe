@@ -7,14 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { store } from './reducer'
 import { Provider } from 'react-redux';
-import axios from 'axios';
+import {setAxios} from './api';
 
-const developmentBackendURL = () => {
-  const {protocol, hostname} = window.location;
-  return `${protocol}//${hostname}:8080`;
-}
-
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? developmentBackendURL() : process.env.REACT_APP_API_URL;
+setAxios(store.dispatch);
 
 ReactDOM.render(
   <Provider store={store}>
