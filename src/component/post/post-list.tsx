@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import * as postAPI from "../../api/post";
 import { Post } from "../../model";
@@ -10,6 +10,7 @@ import {POST_PAGE_SIZE} from ".";
 export default function PostList({type}: {type: postAPI.PostListType}) {
     const params = useParams();
     const location = useLocation();
+    const postRef = useRef<HTMLDivElement[]>([]);
     let {cursor, initPage} = queryString.parse(location.search, {parseNumbers: true});
     initPage = initPage !== null && typeof initPage === "number"  ? initPage : 0;
 
@@ -53,16 +54,21 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
                 setTitle("");
                 break
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [type, keyword])
 
     useEffect(() => {
         if (document.getElementsByClassName('post-card').length === 0) {
             return;
         }
-        if (cursor === null || typeof cursor !== "number" || document.getElementsByClassName('post-card').length < cursor) {
-            cursor = 0;
+        let target;
+        if (cursor === null || typeof cursor !== "number" || postRef.current.length < cursor) {
+            target = 0;
+        } else {
+            target = cursor;
         }
-        document.getElementsByClassName('post-card')[cursor].scrollIntoView()
+        postRef.current[target].scrollIntoView()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [posts, cursor])
 
     useEffect(() => {
@@ -74,7 +80,6 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
                 setPosts(posts.concat(result));
             }
         });
-    // fetch 유무로만 useEffect
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page.index]);
 
@@ -85,7 +90,7 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
     return(
         <div>
             <ListHeader type={type} title={title}/>
-            {posts.map((post) => <PostCard key={post.id} {...post}/>)}            
+            {posts.map((post, index) => <div ref={(el: HTMLDivElement) => (postRef.current[index] = el)} key={post.id}><PostCard {...post}/></div>)}            
             {page.lastPage ? 
                 <div className="load-more-page" onClick={loadMorePost}>{strings.lastPage}</div>
                 :
