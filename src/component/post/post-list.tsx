@@ -61,13 +61,11 @@ export default function PostList({type}: {type: postAPI.PostListType}) {
         if (document.getElementsByClassName('post-card').length === 0) {
             return;
         }
-        let target;
-        if (cursor === null || typeof cursor !== "number" || postRef.current.length < cursor) {
-            target = 0;
+        if (cursor === null || typeof cursor !== "number" || postRef.current.length < cursor || cursor === 0) {
+            return;
         } else {
-            target = cursor;
+            postRef.current[cursor].scrollIntoView()
         }
-        postRef.current[target].scrollIntoView()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [posts, cursor])
 
