@@ -195,7 +195,7 @@ button {
     width: fit-content;
 }
 
-#post-form-input-files {
+input[type=file], #post-form-input-files {
     display: none;
 }
 
@@ -220,7 +220,20 @@ button {
 .user-info-bio {
     padding: 8px;
     padding-bottom: 20px;
+}
 
+.user-info-bio > textarea {
+    resize: none;
+    width:50%;
+}
+
+.user-info-bio > pre {
+    all: initial;
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+    font-size: 11px;
 }
 
 /* post grid */
