@@ -38,3 +38,20 @@ export interface Comment {
     liked_id: number,
     created_at: Date,
 }
+
+export interface HashTag {
+    tag: string,
+    count: number
+}
+
+export interface ValidationError {
+    field: string,
+    rejected_value: string | number | boolean,
+    default_message: string
+}
+export interface Error {
+    status: string,
+    message: string,
+    code: string,
+    validations?: ValidationError[]
+}

@@ -1,8 +1,8 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { Dispatch } from "react";
-import { User } from "../model";
-import { didSignIn, didSignOut } from "../reducer/auth";
+import {Dispatch} from "react";
+import {User} from "../model";
+import {didSignIn, didSignOut} from "../reducer/auth";
 
 interface JWT {
     access_token: string;
@@ -11,7 +11,7 @@ interface JWT {
 
 export const signIn = (dispatch: Dispatch<any>, email: string, password: string) => {
     return axios.post("/auth/sign-in", {email, password}).then((result) => {
-        let jwt: JWT  = result.data;
+        let jwt: JWT = result.data;
         const user: User = jwtDecode<User>(jwt.access_token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
         window.sessionStorage.setItem('rt', jwt.refresh_token);
@@ -53,7 +53,7 @@ export const refresh = (): Promise<User> => {
         return Promise.reject(null);
     }
     return axios.post("/auth/refresh", {access_token: rt, refresh_token: rt}).then((result) => {
-        let jwt: JWT  = result.data;
+        let jwt: JWT = result.data;
         const user: User = jwtDecode<User>(jwt.access_token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
         window.sessionStorage.setItem('rt', jwt.refresh_token);

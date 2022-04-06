@@ -1,64 +1,70 @@
-import { User } from "../../model";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {Error, User} from "../../model";
+import {clear} from "../../reducer/error";
 
-export function HashTag(prop:{hashtag: string}) {
+export function HashTag(prop: {hashtag: string}) {
+    const navigate = useNavigate()
     const {hashtag} = prop;
     if (hashtag[0] !== "#") {
         return <span>{hashtag}</span>
     }
-    return <span className="hashtag"><a className="bold-href" href={"/hash-tag/"+prop.hashtag.substring(1)}>{prop.hashtag}</a></span>
+    return <span className="hashtag bold-href" onClick={() => {navigate(`/hash-tag/${prop.hashtag.substring(1)}/post`)}}>{prop.hashtag}</span>
 }
 
-export function Mention(prop:{mention: string}) {
+// TODO: user 정보 페이지 만들어지면 변경하기
+export function Mention(prop: {mention: string}) {
+    const navigate = useNavigate()
     const {mention} = prop;
     if (mention[0] !== "@") {
         return <span>{mention}</span>
     }
-    return <span className="mention"><a className="bold-href" href={"/user/"+mention.substring(1)}>{mention}</a></span>
+    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user`)}}>{mention}</span>
 }
 
 export function Content(prop: {description: string, author: User}) {
     const parts = prop.description.split(/([@#][^ \n@#]+)/g)
-    const result:any[] = []
+    const result: any[] = []
     for (let i = 0; i < parts.length; i++) {
-        if (i%2 === 0) {
+        if (i % 2 === 0) {
             result.push(parts[i])
         }
         else {
             if (parts[i][0] === "#") {
                 // hash tag
-                result.push(<HashTag key={i} hashtag={parts[i]}/>)
+                result.push(<HashTag key={i} hashtag={parts[i]} />)
             } else {
                 // mention user
-                result.push(<Mention key={i} mention={parts[i]}/>)
+                result.push(<Mention key={i} mention={parts[i]} />)
             }
         }
     }
     return <p className="post-description"><b>{prop.author.name}</b> {result}</p>;
 }
 
-export function SquareImage (prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" className="post-img"/>
+export function SquareImage(prop: {src: string, size: string}) {
+    return <img src={prop.src} alt="" className="post-img" />
 }
 
-export function RoundImage (prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" width={prop.size} height={prop.size} style={{"borderRadius": "50%"}}/>
+export function RoundImage(prop: {src: string, size: string}) {
+    return <img src={prop.src} alt="" width={prop.size} height={prop.size} style={{"borderRadius": "50%"}} />
 }
 
 
-export function UserBrief (user: User) {
+export function UserBrief(user: User) {
 
     let {photo, name} = user;
 
     if (photo === null || photo.id === -1) {
         photo = {
-          id: -1,
-          path: "/default-profile.png"
+            id: -1,
+            path: "/default-profile.png"
         };
     }
 
     return (
         <div className="user-brief">
-            <RoundImage src={photo.path} size={"30px"}/>
+            <RoundImage src={photo.path} size={"30px"} />
             <b>{name}</b>
         </div>
     )
@@ -115,3 +121,28 @@ export function CreatedAt(prop: {date: Date}) {
     const content = getTime(date);
     return <div className="created_at">{content}</div>
 }
+
+export function ErrorBox({error}: {error: Error}) {
+    const dispatch = useDispatch();
+    function close() {
+        dispatch(clear());
+    }
+    return (
+        <div className="error-box">
+            <div className="window">
+                <div className="title-bar">
+                    <div className="title-bar-text">
+                        {`ERROR_${error.code}`}
+                    </div>
+                    <div className="title-bar-controls">
+                        <button aria-label="Close" onClick={close}></button>
+                    </div>
+                </div>
+                <div className='window-body'>
+                    {`오류!: ${error.message}`}
+                </div>
+            </div>
+        </div>
+    )
+}
+

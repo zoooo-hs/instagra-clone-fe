@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
-import { CommentType } from "../component/comment";
-import { Comment } from "../model";
+import axios, {AxiosError} from "axios";
+import {CommentType} from "../component/comment";
+import {Comment} from "../model";
 
 
 export const fetch = (id: number, type: CommentType, index: number): Promise<Comment[]> => {
@@ -12,12 +12,12 @@ export const fetch = (id: number, type: CommentType, index: number): Promise<Com
                     size: 4
                 }
             }).then((result) => Promise.resolve(result.data))
-            .catch((e: AxiosError) => {
-                if (e.response?.status === 403) {
-                    return Promise.reject("AUTH");
-                }
-                return Promise.resolve([]);
-            });
+                .catch((e: AxiosError) => {
+                    if (e.response?.status === 403) {
+                        return Promise.reject("AUTH");
+                    }
+                    return Promise.resolve([]);
+                });
         case "CommentComment":
             return axios.get(`/comment/${id}/comment`, {
                 params: {
@@ -25,18 +25,18 @@ export const fetch = (id: number, type: CommentType, index: number): Promise<Com
                     size: 20
                 }
             }).then((result) => Promise.resolve(result.data))
-            .catch((e: AxiosError) => {
-                if (e.response?.status === 403) {
-                    return Promise.reject("AUTH");
-                }
-                return Promise.resolve([]);
-            });
+                .catch((e: AxiosError) => {
+                    if (e.response?.status === 403) {
+                        return Promise.reject("AUTH");
+                    }
+                    return Promise.resolve([]);
+                });
         default:
             return Promise.reject("");
     }
 }
 
-export const post = (id: number, content: string, type: CommentType): Promise<Comment> =>  {
+export const post = (id: number, content: string, type: CommentType): Promise<Comment> => {
     switch (type) {
         case "PostComment":
             return axios.post(`/post/${id}/comment`, {
@@ -51,11 +51,11 @@ export const post = (id: number, content: string, type: CommentType): Promise<Co
     }
 }
 
-export const deleteById = (id: number):Promise<void> => {
+export const deleteById = (id: number): Promise<void> => {
     return axios.delete(`/comment/${id}`);
 }
 
-export const patch = (id: number, content: string):Promise<Comment> => {
+export const patch = (id: number, content: string): Promise<Comment> => {
     return axios.patch(`/comment/${id}`, {
         content
     }).then(result => result.data);

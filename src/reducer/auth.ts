@@ -1,5 +1,5 @@
-import { Action } from ".";
-import { User } from "../model";
+import {Action} from ".";
+import {User} from "../model";
 
 export interface AuthState {
     user: User,
@@ -9,7 +9,7 @@ export interface AuthState {
 type AuthAction = Action<AuthState>;
 
 const initialState: AuthState = {
-    user: {email: "", name: "", id: -1, bio:"", photo: {id:-1, path:""}},
+    user: {email: "", name: "", id: -1, bio: "", photo: {id: -1, path: ""}},
     isAthenticated: false
 }
 
