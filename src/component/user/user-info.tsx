@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {Navigate, useParams} from "react-router-dom";
 import * as userAPI from "../../api/user";
+import * as followAPI from "../../api/follow";
 import {Photo, User} from "../../model";
 import {RootState} from "../../reducer";
 import {RoundImage} from "../common";
@@ -20,7 +21,6 @@ export default function UserInfo() {
     const [editMode, setEditMode] = useState(false);
     const [profileValue, setProfileValue] = useState<User>();
     const [profilePhotoFile, setProfilePhotoFile] = useState<File>();
-    const [profilePhotoHover, setProfilePhotoHover] = useState(false);
 
     useEffect(() => {
         if (user === undefined && loading === true) {
@@ -61,11 +61,24 @@ export default function UserInfo() {
     function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         if (profileValue === undefined) return;
         const {files} = event.target;
-        if (files !== null && files?.length == 1) {
+        if (files !== null && files?.length === 1) {
             const photo: Photo = {id: -122, path: URL.createObjectURL(files[0])}
             setProfilePhotoFile(files[0]);
             setProfileValue({...profileValue, photo});
         }
+    }
+
+    function FollowButton(user: User) {
+        async function followToggle() {
+            setLoading(true);
+            if (user.following) {
+                await followAPI.unfollow(user.id)
+            } else {
+                await followAPI.follow(user.id)
+            }
+            setUser(undefined);
+        }
+        return <button onClick={followToggle}>{user.following? "팔로잉" : "팔로우" }</button>
     }
 
     if (loading) {
@@ -102,11 +115,15 @@ export default function UserInfo() {
                             <pre>
                                 {user.bio}
                             </pre>
-                            {auth.user.id === user.id ?
-                                <button onClick={launchEditMode}>수정</button>
-                                :
-                                null
-                            }
+                            <div>
+                                <button>{`팔로워 ${user.follower_count}`}</button>
+                                <button>{`팔로잉 ${user.following_count}`}</button>
+                                {auth.user.id === user.id ?
+                                    <button onClick={launchEditMode}>수정</button>
+                                    :
+                                    <FollowButton {...user}/>
+                                }
+                            </div>
                         </div>
                     </div>
                 }
