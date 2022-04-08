@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {Navigate, useParams} from "react-router-dom";
-import * as userAPI from "../../api/user";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import * as followAPI from "../../api/follow";
+import * as userAPI from "../../api/user";
 import {Photo, User} from "../../model";
 import {RootState} from "../../reducer";
-import {RoundImage} from "../common";
+import {RoundImage, UserResultEntity} from "../common";
 import PostGrid from "../post/post-grid";
 
 
@@ -22,15 +22,18 @@ export default function UserInfo() {
     const [profileValue, setProfileValue] = useState<User>();
     const [profilePhotoFile, setProfilePhotoFile] = useState<File>();
 
+    const [showFollowDetail, setShowFollowDetail] = useState<FollowListType>("none");
+
     useEffect(() => {
-        if (user === undefined && loading === true) {
+        if (user === undefined && loading === true || user !== undefined && user.name !== name) {
+            setShowFollowDetail("none");
             userAPI.infoByName(name).then(result => {
                 setUser(result);
                 setLoading(false);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loading, user]);
+    }, [user, name]);
 
 
     function launchEditMode() {
@@ -78,7 +81,45 @@ export default function UserInfo() {
             }
             setUser(undefined);
         }
-        return <button onClick={followToggle}>{user.following? "팔로잉" : "팔로우" }</button>
+        return <button onClick={followToggle}>{user.following ? "팔로잉" : "팔로우"}</button>
+    }
+
+    type FollowListType = "none" | "following" | "follower";
+    function FollowList({type, userId, onClose}: {type: FollowListType, userId: number, onClose: () => void}) {
+        const [users, setUsers] = useState<User[]>([]);
+        const navigate = useNavigate();
+        useEffect(() => {
+            switch (type) {
+                case "follower":
+                    followAPI.findByFollowUserId(userId).then(result => {
+                        setUsers(result);
+                    });
+                    break;
+                case "following":
+                    followAPI.findByUserId(userId).then(result => {
+                        setUsers(result);
+                    });
+                    break;
+                default:
+                    setUsers([]);
+            }
+        }, [userId]);
+        return (
+            <div className="follow-list modal">
+                <div className="window">
+                    <div className="title-bar">
+                        <div className="title-bar-text"> {type} </div>
+                        <div className="title-bar-controls">
+                            <button aria-label="Close" onClick={onClose}></button>
+                        </div>
+                    </div>
+                    <div className="window-body">
+                        {users.map((u, index) => <UserResultEntity key={index} user={u} navigate={navigate} />)}
+                    </div>
+                </div>
+
+            </div>
+        )
     }
 
     if (loading) {
@@ -116,12 +157,15 @@ export default function UserInfo() {
                                 {user.bio}
                             </pre>
                             <div>
-                                <button>{`팔로워 ${user.follower_count}`}</button>
-                                <button>{`팔로잉 ${user.following_count}`}</button>
+                                {showFollowDetail !== "none" ?
+                                    <FollowList type={showFollowDetail} userId={user.id} onClose={() => {setShowFollowDetail("none")}} />
+                                    : null}
+                                <button disabled={user.follower_count == 0} onClick={() => {setShowFollowDetail("follower")}}>{`팔로워 ${user.follower_count}`}</button>
+                                <button disabled={user.following_count == 0} onClick={() => {setShowFollowDetail("following")}}>{`팔로잉 ${user.following_count}`}</button>
                                 {auth.user.id === user.id ?
                                     <button onClick={launchEditMode}>수정</button>
                                     :
-                                    <FollowButton {...user}/>
+                                    <FollowButton {...user} />
                                 }
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Error, User} from "../../model";
 import {clear} from "../../reducer/error";
 
@@ -146,3 +146,19 @@ export function ErrorBox({error}: {error: Error}) {
     )
 }
 
+export function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
+    return (
+        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
+            <RoundImage src={user.photo.path} size={"30px"} />
+            <b>{user.name}</b>
+        </div>
+    )
+}
+export function HashTagResultEntity({tag, count, navigate}: {tag: string, count: number, navigate: NavigateFunction}) {
+    const tagWithoutHash = tag.substring(1);
+    return (
+        <div onClick={() => {navigate(`/hash-tag/${tagWithoutHash}/post`)}}>
+            <b>{tag}</b> <i>{count}</i>
+        </div>
+    )
+}
