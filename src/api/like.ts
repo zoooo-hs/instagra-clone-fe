@@ -1,7 +1,7 @@
 import axios from "axios";
 import {LikeType} from "../component/like";
 
-export const likeIt = (id: number, type: LikeType): Promise<number> => {
+export async function likeIt(id: number, type: LikeType): Promise<number> {
     switch (type) {
         case "CommentLike":
             return axios.post(`/comment/${id}/like`).then(result => result.data.id);

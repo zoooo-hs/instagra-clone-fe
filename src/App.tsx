@@ -17,6 +17,7 @@ import {Search} from './component/search/search';
 import UserInfo from './component/user/user-info';
 import * as errorState from './reducer/error';
 import {ErrorBox} from './component/common';
+import {setAxios} from './api';
 
 function App() {
     const {user, isAthenticated}: AuthState = useSelector((state: RootState) => state.auth);
@@ -25,6 +26,7 @@ function App() {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    setAxios(dispatch, navigate);
 
 
     const strings = {

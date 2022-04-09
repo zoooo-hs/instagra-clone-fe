@@ -25,7 +25,7 @@ export default function UserInfo() {
     const [showFollowDetail, setShowFollowDetail] = useState<FollowListType>("none");
 
     useEffect(() => {
-        if (user === undefined && loading === true || user !== undefined && user.name !== name) {
+        if ((user === undefined && loading === true) || (user !== undefined && user.name !== name)) {
             setShowFollowDetail("none");
             userAPI.infoByName(name).then(result => {
                 setUser(result);
@@ -103,6 +103,7 @@ export default function UserInfo() {
                 default:
                     setUsers([]);
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [userId]);
         return (
             <div className="follow-list modal">
@@ -160,8 +161,8 @@ export default function UserInfo() {
                                 {showFollowDetail !== "none" ?
                                     <FollowList type={showFollowDetail} userId={user.id} onClose={() => {setShowFollowDetail("none")}} />
                                     : null}
-                                <button disabled={user.follower_count == 0} onClick={() => {setShowFollowDetail("follower")}}>{`팔로워 ${user.follower_count}`}</button>
-                                <button disabled={user.following_count == 0} onClick={() => {setShowFollowDetail("following")}}>{`팔로잉 ${user.following_count}`}</button>
+                                <button disabled={user.follower_count === 0} onClick={() => {setShowFollowDetail("follower")}}>{`팔로워 ${user.follower_count}`}</button>
+                                <button disabled={user.following_count === 0} onClick={() => {setShowFollowDetail("following")}}>{`팔로잉 ${user.following_count}`}</button>
                                 {auth.user.id === user.id ?
                                     <button onClick={launchEditMode}>수정</button>
                                     :

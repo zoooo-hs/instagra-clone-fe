@@ -2,14 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from "react-router-dom";
-import {setAxios} from './api';
 import App from './App';
 import './index.css';
 import {store} from './reducer';
 import reportWebVitals from './reportWebVitals';
-
-
-setAxios(store.dispatch);
 
 ReactDOM.render(
     <Provider store={store}>
