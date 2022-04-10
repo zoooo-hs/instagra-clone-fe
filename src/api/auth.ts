@@ -1,12 +1,18 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import jwtDecode, {JwtPayload} from "jwt-decode";
 import {Dispatch} from "react";
 import {User} from "../model";
 import {didSignIn, didSignOut} from "../reducer/auth";
 
+import {info as findUserInfoById} from "./user";
+
 interface JWT {
     access_token: string;
     refresh_token: string;
+}
+
+interface JWTPayload extends JwtPayload {
+    id: number;
 }
 
 export async function signIn(dispatch: Dispatch<any>, email: string, password: string) {
@@ -54,10 +60,13 @@ export async function refresh(): Promise<User> {
     }
     return axios.post("/auth/refresh", {access_token: rt, refresh_token: rt}).then((result) => {
         let jwt: JWT = result.data;
-        const user: User = jwtDecode<User>(jwt.access_token);
+        const userId = jwtDecode<JWTPayload>(jwt.access_token).id;
+        if (userId === -1) {
+            return Promise.reject();
+        }
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access_token}`;
         window.sessionStorage.setItem('rt', jwt.refresh_token);
         window.sessionStorage.setItem('at', jwt.access_token);
-        return Promise.resolve(user);
+        return findUserInfoById(userId);
     });
 }
