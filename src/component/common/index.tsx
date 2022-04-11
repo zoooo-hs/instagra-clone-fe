@@ -12,14 +12,14 @@ export function HashTag(prop: {hashtag: string}) {
     return <span className="hashtag bold-href" onClick={() => {navigate(`/hash-tag/${prop.hashtag.substring(1)}/post`)}}>{prop.hashtag}</span>
 }
 
-// TODO: user 정보 페이지 만들어지면 변경하기
 export function Mention(prop: {mention: string}) {
     const navigate = useNavigate()
     const {mention} = prop;
-    if (mention[0] !== "@") {
-        return <span>{mention}</span>
+    let name = mention;
+    if (mention[0] === "@") {
+        name = mention.substring(1);
     }
-    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user`)}}>{mention}</span>
+    return <span className="mention bold-href" onClick={() => {navigate(`/name/${name}/user`)}}>{mention}</span>
 }
 
 export function Content(prop: {description: string, author: User}) {
@@ -39,7 +39,7 @@ export function Content(prop: {description: string, author: User}) {
             }
         }
     }
-    return <p className="post-description"><b>{prop.author.name}</b> {result}</p>;
+    return <p className="post-description"><Mention mention={prop.author.name}/> {result}</p>;
 }
 
 export function SquareImage(prop: {src: string, size: string}) {

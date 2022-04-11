@@ -1,8 +1,9 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import * as commentAPI from "../../api/comment";
 import {Comment} from "../../model";
 import {store} from "../../reducer";
-import {Content, CreatedAt, RoundImage} from "../common";
+import {Content, CreatedAt} from "../common";
 import {LikeCount, LikeIndicator} from "../like/like-indicator";
 import {CommentForm} from "./comment-form";
 
@@ -14,6 +15,7 @@ export const CommentCard = (prop: {comment: Comment, callback: () => void}) => {
     } = prop.comment;
     const {callback} = prop;
 
+    const navigate = useNavigate();
     const user = store.getState().auth.user;
 
     const [liked, setLiked] = useState(iLiked);
@@ -52,7 +54,7 @@ export const CommentCard = (prop: {comment: Comment, callback: () => void}) => {
 
     return (
         <div className="comment-card">
-            <RoundImage src={author.photo.path} size={"25px"} />
+            <img src={author.photo.path} onClick={() => {navigate(`/name/${author.name}/user`)}} alt="" width="25px" height="25px" style={{"borderRadius": "50%"}} />
             <div className="comment-content">
                 {openEdit ?
                     <CommentForm id={id} type={"PostComment"} callback={editComment} editOption={{commentId: id, originContent: content}} />
