@@ -42,8 +42,13 @@ button {
 }
 
 .user-brief>* {
-    display: inline-block;
+    display: inline;
     vertical-align: middle;
+    padding-right: 10px;
+}
+
+.user-brief p {
+    word-wrap: normal;
 }
 
 .load-more-page {
@@ -231,7 +236,7 @@ input[type=file], #post-form-input-files {
     all: initial;
     display: block;
     font-family: monospace;
-    white-space: pre;
+    white-space: pre-wrap;
     margin: 1em 0;
     font-size: 11px;
 }

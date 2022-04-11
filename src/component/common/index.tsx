@@ -147,10 +147,16 @@ export function ErrorBox({error}: {error: Error}) {
 }
 
 export function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
+    let {bio} = user;
+    if (bio.length > 40) {
+        bio = `${user.bio.substring(0, 40)}...`;
+    }
+
     return (
         <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
             <RoundImage src={user.photo.path} size={"30px"} />
             <b>{user.name}</b>
+            <p>{bio}</p>
         </div>
     )
 }
