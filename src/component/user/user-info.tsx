@@ -5,7 +5,7 @@ import * as followAPI from "../../api/follow";
 import * as userAPI from "../../api/user";
 import {Photo, User} from "../../model";
 import {RootState} from "../../reducer";
-import {RoundImage, UserResultEntity} from "../common";
+import {UserResultEntity} from "../common";
 import PostGrid from "../post/post-grid";
 
 
@@ -150,7 +150,7 @@ export default function UserInfo() {
                     :
                     <div>
                         <div className="user-info-profile">
-                            <RoundImage src={user.photo.path} size="50px" />
+                            <img src={user.photo.path} alt="" width="50px" height="50px" style={{"borderRadius": "50%"}} />
                             <b>{user.name}</b>
                         </div>
                         <div className="user-info-bio">

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {PhotoList} from ".";
 import {Post} from "../../model";
 import {CommentList} from "../comment/comment-list";
-import {Content, CreatedAt, RoundImage} from "../common";
+import {Content, CreatedAt} from "../common";
 import {LikeCount, LikeIndicator} from "../like/like-indicator";
 
 
@@ -52,7 +52,7 @@ export default function PostCard(post: Post) {
     return (
         <div className="post-card">
             <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
-                <RoundImage src={user.photo.path} size={"30px"} />
+                <img src={user.photo.path} alt="" width="30px" height="30px" style={{"borderRadius": "50%"}} />
                 <b>{user.name}</b>
             </div>
             <PhotoList photos={post.photos} />

@@ -42,34 +42,6 @@ export function Content(prop: {description: string, author: User}) {
     return <p className="post-description"><Mention mention={prop.author.name}/> {result}</p>;
 }
 
-export function SquareImage(prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" className="post-img" />
-}
-
-export function RoundImage(prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" width={prop.size} height={prop.size} style={{"borderRadius": "50%"}} />
-}
-
-
-export function UserBrief(user: User) {
-
-    let {photo, name} = user;
-
-    if (photo === null || photo.id === -1) {
-        photo = {
-            id: -1,
-            path: "/default-profile.png"
-        };
-    }
-
-    return (
-        <div className="user-brief">
-            <RoundImage src={photo.path} size={"30px"} />
-            <b>{name}</b>
-        </div>
-    )
-}
-
 export interface ResourcePage {
     index: number,
     size?: number,
@@ -148,13 +120,13 @@ export function ErrorBox({error}: {error: Error}) {
 
 export function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
     let {bio} = user;
-    if (bio.length > 40) {
+    if (bio !== null && bio.length > 40) {
         bio = `${user.bio.substring(0, 40)}...`;
     }
 
     return (
         <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
-            <RoundImage src={user.photo.path} size={"30px"} />
+            <img src={user.photo.path} alt="" width="30px" height="30px" style={{"borderRadius": "50%"}} />
             <b>{user.name}</b>
             <p>{bio}</p>
         </div>
