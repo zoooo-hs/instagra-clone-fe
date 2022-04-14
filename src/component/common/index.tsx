@@ -126,7 +126,7 @@ export function UserResultEntity({user, navigate}: {user: User, navigate: Naviga
 
     return (
         <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
-            <img src={user.photo.path} alt="" width="30px" height="30px" style={{"borderRadius": "50%"}} />
+            <img className="round-img img-30px" src={user.photo.path} alt="" />
             <b>{user.name}</b>
             <p>{bio}</p>
         </div>

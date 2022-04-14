@@ -134,9 +134,9 @@ export default function UserInfo() {
                 {editMode && profileValue !== undefined ?
                     <div>
                         <div className="user-info-profile" >
-                            <img
+                            <img className="round-img img-50px"
                                 onClick={() => {document.getElementById('profile-form-input-files')?.click()}}
-                                src={profileValue.photo.path} alt="" width="50px" height="50px" style={{"borderRadius": "50%"}} />
+                                src={profileValue.photo.path} alt="" />
                             <b>{user.name}</b>
                         </div>
                         <div className="user-info-bio">
@@ -150,7 +150,7 @@ export default function UserInfo() {
                     :
                     <div>
                         <div className="user-info-profile">
-                            <img src={user.photo.path} alt="" width="50px" height="50px" style={{"borderRadius": "50%"}} />
+                            <img className="round-img img-50px" src={user.photo.path} alt="" />
                             <b>{user.name}</b>
                         </div>
                         <div className="user-info-bio">

@@ -54,7 +54,7 @@ export const CommentCard = (prop: {comment: Comment, callback: () => void}) => {
 
     return (
         <div className="comment-card">
-            <img src={author.photo.path} onClick={() => {navigate(`/name/${author.name}/user`)}} alt="" width="25px" height="25px" style={{"borderRadius": "50%"}} />
+            <img className="round-img img-25px" src={author.photo.path} onClick={() => {navigate(`/name/${author.name}/user`)}} alt="" />
             <div className="comment-content">
                 {openEdit ?
                     <CommentForm id={id} type={"PostComment"} callback={editComment} editOption={{commentId: id, originContent: content}} />
