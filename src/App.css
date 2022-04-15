@@ -147,13 +147,13 @@ button {
     aspect-ratio: 1/1;
 }
 
-.post-photo > img {
+.post-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.post-photo > img:hover {
+.post-img:hover {
     object-fit: contain;
 }
 
