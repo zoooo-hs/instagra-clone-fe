@@ -31,7 +31,7 @@ export function PhotoList(prop: {photos: Photo[], handleClick?: (index: number) 
             <div className="post-photo-list">
                 {photos.map((photo, index) =>
                     <div className="post-photo" key={index} onClick={() => {handleClick(index)}}>
-                        <img src={photo.path} alt="" width="500px" height="500px" className="post-img" />
+                        <img src={photo.path} alt="" className="post-img" />
                     </div>
                 )}
             </div>
