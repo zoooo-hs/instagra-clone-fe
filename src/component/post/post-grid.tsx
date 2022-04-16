@@ -3,12 +3,12 @@ import {useNavigate} from "react-router-dom";
 import {POST_PAGE_SIZE} from ".";
 import * as postAPI from "../../api/post";
 import {Post} from "../../model";
-import {ResourcePage, SquareImage} from "../common";
+import {ResourcePage} from "../common";
 
 function PostGridElement({post}: {post: Post}) {
     return (
         <div className="post-grid-element">
-            <SquareImage src={post.photos[0].path} size="10px" />
+            <img src={post.photos[0].path} alt="" className="post-img" />
         </div>
     )
 }

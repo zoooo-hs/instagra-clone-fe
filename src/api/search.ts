@@ -1,9 +1,9 @@
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import {HashTag, User} from "../model";
 
 export type SearchType = "NAME" | "HASH_TAG";
 
-export function hashTagSearch(keyword: string, searchKey: SearchType): Promise<HashTag[]> {
+export async function hashTagSearch(keyword: string, searchKey: SearchType): Promise<HashTag[]> {
     return axios.get("/hash-tag", {
         params: {
             keyword,
@@ -12,15 +12,12 @@ export function hashTagSearch(keyword: string, searchKey: SearchType): Promise<H
             size: 20
         }
     }).then(result => result.data)
-        .catch((e: AxiosError) => {
-            if (e.response?.status === 403) {
-                return Promise.reject("AUTH");
-            }
+        .catch(_ => {
             return Promise.resolve([]);
         });
 }
 
-export function userSearch(keyword: string, searchKey: SearchType): Promise<User[]> {
+export async function userSearch(keyword: string, searchKey: SearchType): Promise<User[]> {
     return axios.get("/user", {
         params: {
             keyword,
@@ -29,10 +26,7 @@ export function userSearch(keyword: string, searchKey: SearchType): Promise<User
             size: 20
         }
     }).then(result => result.data)
-        .catch((e: AxiosError) => {
-            if (e.response?.status === 403) {
-                return Promise.reject("AUTH");
-            }
+        .catch(_ => {
             return Promise.resolve([]);
         });
 }

@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Error, User} from "../../model";
 import {clear} from "../../reducer/error";
 
@@ -12,14 +12,14 @@ export function HashTag(prop: {hashtag: string}) {
     return <span className="hashtag bold-href" onClick={() => {navigate(`/hash-tag/${prop.hashtag.substring(1)}/post`)}}>{prop.hashtag}</span>
 }
 
-// TODO: user 정보 페이지 만들어지면 변경하기
 export function Mention(prop: {mention: string}) {
     const navigate = useNavigate()
     const {mention} = prop;
-    if (mention[0] !== "@") {
-        return <span>{mention}</span>
+    let name = mention;
+    if (mention[0] === "@") {
+        name = mention.substring(1);
     }
-    return <span className="mention bold-href" onClick={() => {navigate(`/name/${mention.substring(1)}/user`)}}>{mention}</span>
+    return <span className="mention bold-href" onClick={() => {navigate(`/name/${name}/user`)}}>{mention}</span>
 }
 
 export function Content(prop: {description: string, author: User}) {
@@ -39,35 +39,7 @@ export function Content(prop: {description: string, author: User}) {
             }
         }
     }
-    return <p className="post-description"><b>{prop.author.name}</b> {result}</p>;
-}
-
-export function SquareImage(prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" className="post-img" />
-}
-
-export function RoundImage(prop: {src: string, size: string}) {
-    return <img src={prop.src} alt="" width={prop.size} height={prop.size} style={{"borderRadius": "50%"}} />
-}
-
-
-export function UserBrief(user: User) {
-
-    let {photo, name} = user;
-
-    if (photo === null || photo.id === -1) {
-        photo = {
-            id: -1,
-            path: "/default-profile.png"
-        };
-    }
-
-    return (
-        <div className="user-brief">
-            <RoundImage src={photo.path} size={"30px"} />
-            <b>{name}</b>
-        </div>
-    )
+    return <p className="post-description"><Mention mention={prop.author.name}/> {result}</p>;
 }
 
 export interface ResourcePage {
@@ -146,3 +118,25 @@ export function ErrorBox({error}: {error: Error}) {
     )
 }
 
+export function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
+    let {bio} = user;
+    if (bio !== null && bio.length > 40) {
+        bio = `${user.bio.substring(0, 40)}...`;
+    }
+
+    return (
+        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
+            <img className="round-img img-30px" src={user.photo.path} alt="" />
+            <b>{user.name}</b>
+            <p>{bio}</p>
+        </div>
+    )
+}
+export function HashTagResultEntity({tag, count, navigate}: {tag: string, count: number, navigate: NavigateFunction}) {
+    const tagWithoutHash = tag.substring(1);
+    return (
+        <div onClick={() => {navigate(`/hash-tag/${tagWithoutHash}/post`)}}>
+            <b>{tag}</b> <i>{count}</i>
+        </div>
+    )
+}

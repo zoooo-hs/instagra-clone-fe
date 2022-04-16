@@ -1,13 +1,13 @@
 import axios from "axios";
 import {Photo, User} from "../model";
 
-export function info(id: number): Promise<User> {
+export async function info(id: number): Promise<User> {
     return axios.get(`/user/${id}`).then(result => result.data);
 }
 
-export function infoByName(name: string): Promise<User> {
+export async function infoByName(name: string): Promise<User> {
     return axios.get(`/name/${name}/user`).then(result => result.data)
-        .catch(e => Promise.resolve(undefined));
+        .catch(_ => Promise.resolve(undefined));
 }
 
 export async function updateBio(user: User): Promise<User> {

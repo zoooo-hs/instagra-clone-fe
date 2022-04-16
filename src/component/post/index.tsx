@@ -1,6 +1,5 @@
 import {TailSpin} from "react-loader-spinner";
 import {Photo} from "../../model";
-import {SquareImage} from "../common";
 
 export const POST_PAGE_SIZE = 8
 
@@ -32,7 +31,7 @@ export function PhotoList(prop: {photos: Photo[], handleClick?: (index: number) 
             <div className="post-photo-list">
                 {photos.map((photo, index) =>
                     <div className="post-photo" key={index} onClick={() => {handleClick(index)}}>
-                        <SquareImage src={photo.path} size={"500px"} />
+                        <img src={photo.path} alt="" width="500px" height="500px" className="post-img" />
                     </div>
                 )}
             </div>

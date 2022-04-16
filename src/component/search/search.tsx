@@ -1,26 +1,8 @@
 import {useState} from "react";
-import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import * as SearchAPI from "../../api/search";
 import {HashTag, User} from "../../model";
-import {RoundImage} from "../common";
-
-
-function UserResultEntity({user, navigate}: {user: User, navigate: NavigateFunction}) {
-    return (
-        <div className="user-brief" onClick={() => {navigate(`/name/${user.name}/user`)}}>
-            <RoundImage src={user.photo.path} size={"30px"} />
-            <b>{user.name}</b>
-        </div>
-    )
-}
-function HashTagResultEntity({tag, count, navigate}: {tag: string, count: number, navigate: NavigateFunction}) {
-    const tagWithoutHash = tag.substring(1);
-    return (
-        <div onClick={() => {navigate(`/hash-tag/${tagWithoutHash}/post`)}}>
-            <b>{tag}</b> <i>{count}</i>
-        </div>
-    )
-}
+import {HashTagResultEntity, UserResultEntity} from "../common";
 
 interface SearchFormValue {
     searchKey: SearchAPI.SearchType,

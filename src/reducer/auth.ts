@@ -9,7 +9,7 @@ export interface AuthState {
 type AuthAction = Action<AuthState>;
 
 const initialState: AuthState = {
-    user: {email: "", name: "", id: -1, bio: "", photo: {id: -1, path: ""}},
+    user: {email: "", name: "", id: -1, bio: "", photo: {id: -1, path: ""}, following: false, follower_count: 0, following_count: 0},
     isAthenticated: false
 }
 

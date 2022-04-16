@@ -1,4 +1,4 @@
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import FormData from "form-data";
 import {Post} from "../model";
 
@@ -6,7 +6,7 @@ export type PostListType = "ALL" | "USER" | "HASH_TAG";
 
 const encodedHashTag = encodeURI("#");
 
-export const fetch = async (type: PostListType, keyword: string, index: number, size: number): Promise<Post[]> => {
+export async function fetch(type: PostListType, keyword: string, index: number, size: number): Promise<Post[]> {
     switch (type) {
         case "USER":
             return axios.get(`/name/${keyword}/user/post`,
@@ -16,10 +16,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
                         size
                     }
                 }).then((result) => Promise.resolve(result.data))
-                .catch((e: AxiosError) => {
-                    if (e.response?.status === 403) {
-                        return Promise.reject("AUTH");
-                    }
+                .catch(_ => {
                     return Promise.resolve([]);
                 });
         case "HASH_TAG":
@@ -33,10 +30,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
                         size
                     }
                 }).then((result) => Promise.resolve(result.data))
-                .catch((e: AxiosError) => {
-                    if (e.response?.status === 403) {
-                        return Promise.reject("AUTH");
-                    }
+                .catch(_ => {
                     return Promise.resolve([]);
                 });
         case "ALL":
@@ -48,10 +42,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
                         size
                     }
                 }).then((result) => Promise.resolve(result.data))
-                .catch((e: AxiosError) => {
-                    if (e.response?.status === 403) {
-                        return Promise.reject("AUTH");
-                    }
+                .catch(_ => {
                     return Promise.resolve([]);
                 });
     }
@@ -59,7 +50,7 @@ export const fetch = async (type: PostListType, keyword: string, index: number, 
 }
 
 
-export const post = (formData: {description: string, files: File[]}): Promise<Post> => {
+export async function post (formData: {description: string, files: File[]}): Promise<Post> {
     const {description, files} = formData;
     let fd = new FormData();
     fd.append("description", description);

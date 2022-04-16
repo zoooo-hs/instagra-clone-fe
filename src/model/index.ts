@@ -21,6 +21,10 @@ export interface User {
     name: string;
     bio: string;
     photo: Photo;
+
+    following: boolean;
+    following_count: number;
+    follower_count: number;
 }
 
 export interface SignIn {
@@ -54,4 +58,9 @@ export interface Error {
     message: string,
     code: string,
     validations?: ValidationError[]
+}
+
+export interface Follow {
+    user: User,
+    followUser: User
 }
